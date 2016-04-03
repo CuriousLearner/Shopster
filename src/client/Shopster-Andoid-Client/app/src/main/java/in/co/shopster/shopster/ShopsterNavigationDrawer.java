@@ -11,6 +11,7 @@ import com.joanzapata.android.iconify.Iconify;
 
 import in.co.shopster.shopster.fragments.CartFragment;
 import in.co.shopster.shopster.fragments.HomeFragment;
+import in.co.shopster.shopster.fragments.WalletFragment;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 
@@ -35,9 +36,17 @@ public class ShopsterNavigationDrawer extends MaterialNavigationDrawer {
                 new CartFragment()
         );
 
+        MaterialSection walletSection = newSection(
+                "Wallet",
+                new IconDrawable(this, Iconify.IconValue.fa_money),
+                new WalletFragment()
+        );
+
         this.addSection(homeSection);
 
         this.addSection(cartSection);
+
+        this.addSection(walletSection);
 
         this.setDefaultSectionLoaded(0);
         disableLearningPattern();

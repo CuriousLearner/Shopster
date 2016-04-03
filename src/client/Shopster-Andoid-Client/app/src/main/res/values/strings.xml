@@ -18,7 +18,12 @@
     <string name="title_activity_login">Shopster Login</string>
     <string name="label_login_to_shopster">Login to Shopster </string>
     <string name="label_register_on_shopster">Register on Shopster</string>
-
+    <string name="label_wallet_balance">Wallet Balance</string>
+    <string name="label_rupees">Rs.</string>
+    <string name="label_not_available">N. A.</string>
+    <string name="label_recharge_wallet">Recharge Wallet</string>
+    <string name="hint_coupon_code">Coupon code …</string>
+    <string name="label_recharge">Recharge</string>
 
 
 </resources>
