@@ -16,6 +16,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import in.co.shopster.shopster.Config;
 import in.co.shopster.shopster.R;
 import in.co.shopster.shopster.ShopsterNavigationDrawer;
 import in.co.shopster.shopster.rest.RestClient;
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.btn_register)
     Button registerBtn;
 
+    @Bind(R.id.btn_test)
+    Button testBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ButterKnife.bind(this);
+
+        // Enabled debug logs
+        Config.enableDebugLogs();
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +63,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent registrationIntent = new Intent(MainActivity.this, RegistrationActivity.class);
                 MainActivity.this.startActivity(registrationIntent);
+            }
+        });
+
+        testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent openNavigationDrawer = new Intent(MainActivity.this, ShopsterNavigationDrawer.class);
+                MainActivity.this.startActivity(openNavigationDrawer);
             }
         });
     }

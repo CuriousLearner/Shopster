@@ -1,6 +1,7 @@
 package in.co.shopster.shopster;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -15,5 +16,13 @@ public class Utilities {
                 (isLong) ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT
         ).show();
     }
+
+    public static void writeDebugLog(String msg) {
+        if(Config.isDebugModeEnabled()) {
+            Log.d(Config.getDebugLogTag(), msg);
+        }
+    }
+
+
 
 }
