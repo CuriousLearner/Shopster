@@ -60,3 +60,16 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# For all Projects
+*~
+
+# Environment settings
+.env
+
+# Database
+db.sqlite3
+*.bak
+
+# Virtual Environments
+venv/
