@@ -43,7 +43,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     public static class CartViewHolder extends RecyclerView.ViewHolder {
         protected TextView title;
-        
+
         protected TextView price;
         protected TextView quantity;
         public CartViewHolder(View v) {
