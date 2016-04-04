@@ -1,16 +1,24 @@
 package in.co.shopster.shopster.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,7 +31,12 @@ import in.co.shopster.shopster.Utilities;
 public class CartFragment extends Fragment {
 
     private View view;
-
+    RecyclerView recList;
+    Button add;
+    CartAdapter ca;
+    List result = new ArrayList();
+    String title,price,quantity;
+    int i=0;
     @Bind(R.id.btn_add_to_cart)
     FloatingActionButton addToCartBtn;
 
@@ -76,4 +89,50 @@ public class CartFragment extends Fragment {
 
 
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        starting();
+    }
+
+    private List createList() {
+
+        return result;
+    }
+
+    public void starting()
+    {
+        Log.e("Message", "super1");
+        recList = (RecyclerView) getActivity().findViewById(R.id.cart);
+        add=(Button)getActivity().findViewById(R.id.add);
+        recList.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recList.setLayoutManager(llm);
+        ca = new CartAdapter(createList());
+        recList.setAdapter(ca);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                title = "Title" + i;
+                price = "" + i;
+                quantity = "" + i;
+                CartInfo ci = new CartInfo();
+                ci.title = title;
+                ci.price = price;
+                ci.quantity = quantity;
+                result.add(ci);
+                recList.setAdapter(ca);
+                i=i+1;
+                Log.e("Result",String.valueOf(result));
+            }
+        });
+
+        //recList.setAdapter(ca);
+
+    }
+
+
+
 }
