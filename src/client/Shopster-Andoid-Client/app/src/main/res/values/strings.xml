@@ -30,5 +30,7 @@
         <item>Female</item>
     </array>
     <string name="label_logout">Logout</string>
+    <string name="label_contact_number">Contact Number</string>
+
 
 </resources>

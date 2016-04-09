@@ -121,15 +121,30 @@
                 android:text="@string/label_gender"
                 />
 
-            // @TODO: Gender select
+
             <Spinner
                 android:id="@+id/spin_gender"
                 android:layout_width="match_parent"
                 android:layout_height="50dp">
             </Spinner>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:textSize="20dp"
+                android:text="@string/label_contact_number"
+                />
 
-           <TextView
+            <EditText
+                android:id="@+id/edit_contact_number"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:inputType="number"
+                />
+
+
+            <TextView
                android:layout_width="match_parent"
                android:layout_height="30dp"
                android:layout_marginTop="20dp"

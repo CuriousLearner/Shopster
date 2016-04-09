@@ -18,4 +18,7 @@ public interface ShopsterService {
     @POST("/api/login/")
     Call<ShopsterToken> login(@Body LoginCredentials loginCredentials);
 
+    @POST("/api/user/")
+    Call<Customer> register(@Body Customer customer);
+
 }

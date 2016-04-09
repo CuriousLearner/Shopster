@@ -32,7 +32,7 @@ public class Customer {
     byte age;
     char gender;
     Address address;
-    int phone;
+    long phone;
 
 
     public Customer(
@@ -43,7 +43,7 @@ public class Customer {
             byte age,
             char gender,
             Address address,
-            int phone
+            long phone
             ) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -55,5 +55,16 @@ public class Customer {
         this.phone = phone;
     }
 
+
+    public String toString() {
+        return "First Name : "+firstName+"\n"+
+                "Last Name : "+lastName+"\n"+
+                "Email : "+email+"\n"+
+                "Password : "+password+"\n"+
+                "Age : "+age+"\n"+
+                "Gender : "+gender+"\n"+
+                "Address : "+address.toString()+"\n"+
+                "Phone : "+phone+"\n";
+    }
 
 }

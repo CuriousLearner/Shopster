@@ -1,6 +1,7 @@
 package in.co.shopster.shopster.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,12 +20,21 @@ import android.widget.SpinnerAdapter;
 
 import com.journeyapps.barcodescanner.Util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import in.co.shopster.shopster.R;
 import in.co.shopster.shopster.Utilities;
+import in.co.shopster.shopster.rest.RestClient;
+import in.co.shopster.shopster.rest.models.Address;
+import in.co.shopster.shopster.rest.models.Customer;
+import in.co.shopster.shopster.rest.services.ShopsterService;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -45,6 +56,9 @@ public class RegistrationActivity extends AppCompatActivity {
     @Bind(R.id.spin_gender)
     Spinner genderSpinner;
 
+    @Bind(R.id.edit_contact_number)
+    EditText contactNumberEdit;
+
     @Bind(R.id.edit_line_1)
     EditText lineOneEdit;
 
@@ -63,6 +77,9 @@ public class RegistrationActivity extends AppCompatActivity {
     @Bind(R.id.btn_register)
     Button registerBtn;
 
+    ShopsterService shopsterService;
+
+    private char gender;
 
 
     @Override
@@ -77,6 +94,19 @@ public class RegistrationActivity extends AppCompatActivity {
 
         genderSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, genderList));
 
+        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String gender = (String) adapterView.getItemAtPosition(i);
+                RegistrationActivity.this.gender = (gender.equals("Male")) ? 'M' : 'F';
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //
+            }
+        });
+
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,6 +116,69 @@ public class RegistrationActivity extends AppCompatActivity {
                             RegistrationActivity.this,
                             false
                     );
+
+
+                    long zipCode = (zipCodeEdit.getText().toString().isEmpty()) ?
+                            null : Long.parseLong(zipCodeEdit.getText().toString());
+                    Address address = new Address(
+                            lineOneEdit.getText().toString(),
+                            lineTwoEdit.getText().toString(),
+                            cityEdit.getText().toString(),
+                            stateEdit.getText().toString(),
+                            zipCode
+                    );
+
+                    byte age = (!ageEdit.getText().toString().isEmpty())  ?
+                            Byte.parseByte(ageEdit.getText().toString()) : null;
+
+                    long contactNumber = (!contactNumberEdit.getText().toString().isEmpty()) ?
+                            Long.parseLong(contactNumberEdit.getText().toString()) : null;
+
+                    Customer customer = new Customer(
+                            firstNameEdit.getText().toString(),
+                            lastNameEdit.getText().toString(),
+                            emailEdit.getText().toString(),
+                            passwordEdit.getText().toString(),
+                            age,
+                            RegistrationActivity.this.gender,
+                            address,
+                            contactNumber
+                    );
+
+                    Utilities.writeDebugLog("Customer object : \n" + customer.toString());
+
+                    RestClient.init(ShopsterService.BASE_URL);
+                    RegistrationActivity.this.shopsterService = RestClient.getRetrofit().create(ShopsterService.class);
+
+                    Call registerCall = RegistrationActivity.this.shopsterService.register(customer);
+                    registerCall.enqueue(new Callback() {
+                        @Override
+                        public void onResponse(Response response, Retrofit retrofit) {
+                            if(response.code() == 201) {
+                                Utilities.showToast("Registration successful, please log in.", RegistrationActivity.this.getApplicationContext(), true);
+                                Intent loginIntent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                                RegistrationActivity.this.startActivity(loginIntent);
+                            } else if (response.code() == 400) {
+                                Utilities.showToast("Registration failed !!!", RegistrationActivity.this.getApplicationContext(), false);
+                                try {
+                                    Utilities.writeDebugLog("Registration failed : reason : "+response.errorBody().string());
+                                } catch(IOException ioe) {
+                                    Utilities.writeDebugLog("Registration failed : reason unknown");
+                                }
+
+                            } else {
+                                Utilities.showToast("Something went wrong please contact Shopster support", RegistrationActivity.this.getApplicationContext(), true);
+                                Utilities.writeDebugLog("Unexpected response code : "+response.code()+"\nResponse Body : "+response.body().toString());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Throwable t) {
+                            Utilities.showToast("Registration failed !!!", RegistrationActivity.this.getApplicationContext(), false);
+                            Utilities.writeDebugLog("Registeration failed : reason : "+t.toString());
+                        }
+                    });
+
                 }
             }
         });
@@ -102,6 +195,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 city = cityEdit.getText().toString(),
                 state = stateEdit.getText().toString(),
                 age = ageEdit.getText().toString(),
+                contactNumber = contactNumberEdit.getText().toString(),
                 zipCode = zipCodeEdit.getText().toString();
 
 
@@ -126,6 +220,9 @@ public class RegistrationActivity extends AppCompatActivity {
                 return false;
             } else if (Integer.parseInt(age) > 150) {
                 Utilities.showToast("Invalid age ...", ctx, false);
+                return false;
+            } else if(contactNumber.length() != 10) {
+                Utilities.showToast("Invalid contact number, only 10 digit contact numbers are acceptable", ctx, true);
                 return false;
             } else if (lineOne.isEmpty()) {
                 Utilities.showToast("Invalid address : line one cannot be empty ...", ctx, false);
