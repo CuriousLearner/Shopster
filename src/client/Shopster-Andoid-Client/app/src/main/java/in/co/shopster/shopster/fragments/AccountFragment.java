@@ -28,7 +28,7 @@ public class AccountFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if(view == null) {
-            view = inflater.inflate(R.layout.fragment_hello, container, false);
+            view = inflater.inflate(R.layout.fragment_account, container, false);
             ButterKnife.bind(this, view);
 
             helloBtn.setOnClickListener(new View.OnClickListener() {
