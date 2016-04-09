@@ -19,9 +19,11 @@ import butterknife.ButterKnife;
 import in.co.shopster.shopster.Config;
 import in.co.shopster.shopster.R;
 import in.co.shopster.shopster.ShopsterNavigationDrawer;
+import in.co.shopster.shopster.Utilities;
 import in.co.shopster.shopster.rest.RestClient;
 import in.co.shopster.shopster.rest.models.ExampleUser;
 import in.co.shopster.shopster.rest.services.ExampleService;
+import in.co.shopster.shopster.rest.services.ShopsterService;
 import retrofit.Retrofit;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -73,6 +75,20 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(openNavigationDrawer);
             }
         });
+
+        // check login
+        redirectIfLoggedIn();
     }
 
+    public void redirectIfLoggedIn() {
+        String userApiToken = Utilities.getSharedPreference(this.getApplicationContext(), Config.getShopsterTokenKey());
+        if(!userApiToken.isEmpty()) {
+            Utilities.writeDebugLog("User is logged in : API Key : "+userApiToken);
+            Intent openNavigationDrawerIntent = new Intent(this, ShopsterNavigationDrawer.class);
+            this.startActivity(openNavigationDrawerIntent);
+            Utilities.showToast("Welcome to Shopster !!!", this.getApplicationContext(), true);
+        } else {
+            Utilities.writeDebugLog("User is not logged in.");
+        }
+    }
 }

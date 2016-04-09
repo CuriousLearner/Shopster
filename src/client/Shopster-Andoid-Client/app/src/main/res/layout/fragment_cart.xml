@@ -68,6 +68,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/add"
         android:text="Add"
-        android:layout_gravity="left|bottom" />
+        android:layout_gravity="left|bottom"
+        android:visibility="gone"
+        />
 
 </FrameLayout>

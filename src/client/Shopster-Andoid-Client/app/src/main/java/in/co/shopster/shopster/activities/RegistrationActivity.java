@@ -1,6 +1,7 @@
 package in.co.shopster.shopster.activities;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,10 +9,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import com.journeyapps.barcodescanner.Util;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,6 +41,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
     @Bind(R.id.edit_age)
     EditText ageEdit;
+
+    @Bind(R.id.spin_gender)
+    Spinner genderSpinner;
 
     @Bind(R.id.edit_line_1)
     EditText lineOneEdit;
@@ -63,6 +73,9 @@ public class RegistrationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
+        String[] genderList = this.getResources().getStringArray(R.array.genders);
+
+        genderSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, genderList));
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override

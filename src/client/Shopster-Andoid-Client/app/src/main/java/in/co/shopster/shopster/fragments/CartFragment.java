@@ -34,7 +34,7 @@ public class CartFragment extends Fragment {
     RecyclerView recList;
     Button add;
     CartAdapter ca;
-    List result = new ArrayList();
+    List<CartInfo> cartItems = new ArrayList();
     String title,price,quantity;
     int i=0;
     @Bind(R.id.btn_add_to_cart)
@@ -85,7 +85,18 @@ public class CartFragment extends Fragment {
         Utilities.writeDebugLog("Scan Result : Format name : " + scanResult.getFormatName());
         Utilities.writeDebugLog("Scan Result : Orientation : " + scanResult.getOrientation());
         Utilities.writeDebugLog("Scan Result : Raw bytes : " + scanResult.getRawBytes());
-
+        String productTitle = scanResult.getContents();
+        if(productTitle != null && !productTitle.isEmpty()) {
+            CartInfo ci = new CartInfo();
+            ci.price = "100";
+            ci.quantity = "1";
+            ci.title = scanResult.getContents();
+            cartItems.add(ci);
+            ca.notifyDataSetChanged();
+            Utilities.showToast("Item added to cart !!!", CartFragment.this.getContext(), false);
+        } else {
+            Utilities.showToast("Scan failed !!!", CartFragment.this.getContext(), false);
+        }
 
 
     }
@@ -96,9 +107,9 @@ public class CartFragment extends Fragment {
         starting();
     }
 
-    private List createList() {
+    private List<CartInfo> createList() {
 
-        return result;
+        return cartItems;
     }
 
     public void starting()
@@ -122,15 +133,12 @@ public class CartFragment extends Fragment {
                 ci.title = title;
                 ci.price = price;
                 ci.quantity = quantity;
-                result.add(ci);
-                recList.setAdapter(ca);
-                i=i+1;
-                Log.e("Result",String.valueOf(result));
+                cartItems.add(ci);
+                ca.notifyDataSetChanged();
+                i++;
+                Utilities.writeDebugLog("Result : " + String.valueOf(cartItems));
             }
         });
-
-        //recList.setAdapter(ca);
-
     }
 
 

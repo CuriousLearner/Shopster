@@ -113,7 +113,20 @@
                 android:inputType="number"
                 />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textSize="20dp"
+                android:layout_marginTop="0dp"
+                android:text="@string/label_gender"
+                />
+
             // @TODO: Gender select
+            <Spinner
+                android:id="@+id/spin_gender"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+            </Spinner>
 
 
            <TextView

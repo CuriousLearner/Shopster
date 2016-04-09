@@ -1,6 +1,7 @@
 package in.co.shopster.shopster;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -21,6 +22,17 @@ public class Utilities {
         if(Config.isDebugModeEnabled()) {
             Log.d(Config.getDebugLogTag(), msg);
         }
+    }
+
+    public static void setSharedPreference(Context ctx, String prefKey, String prefVal) {
+        SharedPreferences.Editor she = ctx.getSharedPreferences(Config.getSharedPrefKey(), 0).edit();
+        she.putString(prefKey, prefVal);
+        she.apply();
+    }
+
+    public static String getSharedPreference(Context ctx, String prefKey) {
+        SharedPreferences sp = ctx.getSharedPreferences(Config.getSharedPrefKey(), 0);
+        return sp.getString(prefKey, "");
     }
 
 

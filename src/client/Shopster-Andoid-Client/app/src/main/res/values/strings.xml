@@ -9,6 +9,7 @@
     <string name="label_first_name">First Name</string>
     <string name="label_last_name">Last Name</string>
     <string name="label_age">Age</string>
+    <string name="label_gender">Gender</string>
     <string name="label_address">Address</string>
     <string name="label_line_1">Line 1</string>
     <string name="label_line_2">Line 2</string>
@@ -24,6 +25,9 @@
     <string name="label_recharge_wallet">Recharge Wallet</string>
     <string name="hint_coupon_code">Coupon code …</string>
     <string name="label_recharge">Recharge</string>
-
+    <array name="genders">
+        <item>Male</item>
+        <item>Female</item>
+    </array>
 
 </resources>
