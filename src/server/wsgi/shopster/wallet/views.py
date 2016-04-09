@@ -4,6 +4,8 @@ from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+from rest_framework.decorators import api_view
+
 
 from .models import Order, EWallet, Transaction, Coupon
 from authen.models import User
@@ -100,7 +102,6 @@ def recharge_wallet(request):
 @csrf_exempt
 def get_wallet_details(request, pk):
     if request.method == 'GET':
-        content = {"Message": ""}
         try:
             wallet = EWallet.objects.get(owner=pk)
         except EWallet.DoesNotExist:

@@ -6,6 +6,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
+
 import uuid
 
 from django.conf import settings
@@ -14,11 +15,10 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from wallet.models import EWallet
 
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)
-        EWallet.objects.create(owner=instance, amount=0)
+from hashids import Hashids
+
+hashid = Hashids(salt="SDK89nnskUDmsndas", min_length=40)
+
 
 # Create your models here.
 GENDER_CHOICES = {
@@ -102,6 +102,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                                     help_text='Designates whether this user should be treated as '
                                               'active. Unselect this instead of deleting accounts.')
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    uhash_token = models.CharField(max_length=60, blank=True)
     
     REQUIRED_FIELDS= []
     USERNAME_FIELD = 'email'
@@ -138,3 +139,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.save()
         return True
 
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        hashed_code = hashid.encode(instance.id)
+        instance.uhash_token = str(hashed_code)
+        instance.save()
+        Token.objects.create(user=instance)
+        EWallet.objects.create(owner=instance, amount=0)

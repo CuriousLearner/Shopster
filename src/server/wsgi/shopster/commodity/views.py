@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+from rest_framework.decorators import api_view
 
 from .models import Product, Order
 from .serializer import ProductSerializer, OrderSerializer
@@ -22,6 +23,7 @@ class JSONResponse(HttpResponse):
 
 
 @csrf_exempt
+@api_view(['GET', 'POST'])
 def product_list(request):
     """
     List all products, or create a new product.
@@ -41,6 +43,7 @@ def product_list(request):
 
 
 @csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
 def product_detail(request, pk):
     """
     Retrieve, update or delete a Product.
@@ -68,6 +71,7 @@ def product_detail(request, pk):
 
 
 @csrf_exempt
+@api_view(['GET'])
 def order_list(request):
     """
     List all code Order, or create a new Order.
@@ -81,16 +85,17 @@ def order_list(request):
         serializer = OrderSerializer(order, many=True)
         return JSONResponse(serializer.data)
 
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = OrderSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JSONResponse(serializer.data, status=201)
-        return JSONResponse(serializer.errors, status=400)
+    # elif request.method == 'POST':
+    #     data = JSONParser().parse(request)
+    #     serializer = OrderSerializer(data=data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return JSONResponse(serializer.data, status=201)
+    #     return JSONResponse(serializer.errors, status=400)
 
 
 @csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
 def order_detail(request, pk):
     """
     Retrieve, update or delete a Order.
@@ -118,6 +123,7 @@ def order_detail(request, pk):
 
 
 @csrf_exempt
+@api_view(['POST'])
 def checkout(request):
     '''
     Create Order_Items

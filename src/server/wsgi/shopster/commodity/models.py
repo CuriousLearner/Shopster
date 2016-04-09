@@ -15,7 +15,9 @@ hashid = Hashids(salt="SDK89nnskUDmsndas", min_length=40)
 STATUS_CHOICES = (
     ('D', 'Delivered'),
     ('T', 'In-Transit'),
-    ('O', 'Ordered')
+    ('P', 'Packaged'),
+    ('O', 'Ordered'),
+    ('F', 'Failed'),
 )
 
 
@@ -42,7 +44,7 @@ class Product(models.Model):
 
 
 @receiver(post_save, sender=Product)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
+def create_hash_token(sender, instance=None, created=False, **kwargs):
     if created:
         hashed_code = hashid.encode(instance.pid)
         instance.hash_token = str(hashed_code)

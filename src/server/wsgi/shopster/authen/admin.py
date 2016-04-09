@@ -32,7 +32,7 @@ class UserAdmin(AuthUserAdmin):
     add_form_template = 'admin/auth/user/add_form.html'
     model = User
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('email', 'password', 'uhash_token')}),
         ('Personal info', {'fields': ('first_name', 'last_name',)}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser',
                                     'groups', 'user_permissions')}),
@@ -47,7 +47,7 @@ class UserAdmin(AuthUserAdmin):
     readonly_fields = ('date_joined', 'last_login')
     form = MyUserChangeForm
     add_form = MyUserCreationForm
-    list_display = ('email', 'first_name', 'last_name', 'is_active')
+    list_display = ('email', 'first_name', 'last_name', 'is_active', 'uhash_token')
     list_filter = ('is_superuser', 'is_active')
     search_fields = ('first_name', 'last_name', 'email')
     ordering = ('email',)

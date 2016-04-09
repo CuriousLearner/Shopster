@@ -68,7 +68,7 @@ def person_list(request):
         return JSONResponse(serializer.errors, status=400)
 
 
-@api_view(['GET', 'POST', 'DELETE'])
+@api_view(['GET', 'DELETE'])
 @csrf_exempt
 # @authentication_classes((TokenAuthentication, SessionAuthentication, BasicAuthentication))
 # @permission_classes((IsAuthenticated,))

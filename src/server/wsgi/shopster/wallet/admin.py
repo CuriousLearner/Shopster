@@ -13,7 +13,7 @@ class EWalletAdmin(admin.ModelAdmin):
 
 
 class TransactionAdmin(admin.ModelAdmin):
-	list_display = ('t_id', 'wallet_id', 'amount', 'order_id')
+    list_display = ('t_id', 'wallet_id', 'amount', 'order_id')
 
 
 admin.site.register(Coupon, CouponAdmin)

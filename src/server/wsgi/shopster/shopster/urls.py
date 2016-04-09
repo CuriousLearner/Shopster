@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^', include('commodity.urls')),
     url(r'^', include('authen.urls')),
     url(r'^', include('wallet.urls')),
+    url(r'^', include('delivery.urls')),
 ]
 
 admin.site.site_header = 'Shopster Admin Panel'

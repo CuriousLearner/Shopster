@@ -28,7 +28,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ('order_id', 'products', 'price', 'ordered_on',
-                  'ordered_by', 'is_completed')
+                  'ordered_by', 'is_completed', 'status')
 
     def create(self, validated_data):
         # print(validated_data)
@@ -50,6 +50,20 @@ class OrderSerializer(serializers.ModelSerializer):
             ordered_item.order_id = Order.objects.get(order_id=order.order_id)
             ordered_item.save()
         return order
+
+    def update(self, instance, validated_data):
+        # Update the Order instance
+        print(validated_data)
+        instance.status = validated_data['status']
+        instance.save()
+
+        # Update status of each product
+        for item in validated_data['products']:
+            product = Order_Item.objects.get(order_id=instance)
+            product.status = instance.status
+            product.save()
+
+        return instance
 
 
 class PostOrderSerializer(serializers.ModelSerializer):

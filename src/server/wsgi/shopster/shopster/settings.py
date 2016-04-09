@@ -58,6 +58,7 @@ INSTALLED_APPS = (
     'authen',
     'commodity',
     'wallet',
+    'delivery',
 )
 
 MIDDLEWARE_CLASSES = (
