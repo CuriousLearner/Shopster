@@ -12,6 +12,8 @@ from authen.models import User
 from .serializers import EWalletSerializer
 
 # Create your views here.
+
+
 class JSONResponse(HttpResponse):
     """
     An HttpResponse that renders its content into JSON.
@@ -55,10 +57,11 @@ def pay_for_order(request):
         # print(wallet.amount)
         if wallet.amount < order.price:
             content = {"Message": "Wallet balance low. Please re-charge"}
-            return JSONResponse(content,status=200)
+            return JSONResponse(content, status=200)
         else:
             # Create Transaction and deduct balance
-            Transaction.objects.create(wallet_id=wallet, amount=amount_to_deduct, order_id=order)
+            Transaction.objects.create(
+                wallet_id=wallet, amount=amount_to_deduct, order_id=order)
             wallet.amount -= order.price
             wallet.save()
             order.is_completed = True
@@ -68,7 +71,7 @@ def pay_for_order(request):
         # print(amount_to_deduct)
         # print(wallet)
         # print(data)
-        return JSONResponse(content,status=200)
+        return JSONResponse(content, status=200)
 
 
 @csrf_exempt
@@ -82,10 +85,10 @@ def recharge_wallet(request):
             coupon = Coupon.objects.get(coupon_code=coupon_code)
         except:
             content = {"Message": "Coupon does not exist"}
-            return JSONResponse(content,status=200)
+            return JSONResponse(content, status=200)
         if coupon.is_used:
             content = {"Message": "Coupon already used"}
-            return JSONResponse(content,status=200)
+            return JSONResponse(content, status=200)
         user = User.objects.get(id=ordered_by)
         wallet = EWallet.objects.get(owner=user)
         wallet.amount += coupon.price
@@ -110,4 +113,3 @@ def get_wallet_details(request, pk):
         if request.method == 'GET':
             serializer = EWalletSerializer(wallet)
             return JSONResponse(serializer.data)
-

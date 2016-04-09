@@ -34,6 +34,7 @@ USER_TYPE = {
 
 }
 
+
 class UUIDModel(models.Model):
     """
     An abstract base class model that makes primary key `id` as UUID
@@ -53,7 +54,7 @@ class UserManager(BaseUserManager):
         """
         if not email:
             raise ValueError('The given email must be set')
-            print email , '*****'
+            print email, '*****'
         email = self.normalize_email(email)
         print email
         print '*****'
@@ -72,7 +73,6 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, True, True, **extra_fields)
 
 
-
 class Address(models.Model):
     line1 = models.CharField(max_length=100)
     line2 = models.CharField(max_length=100)
@@ -82,7 +82,7 @@ class Address(models.Model):
 
     def __unicode__(self):
         return "%s, %s, %s, %s - %s" % (self.line1, self.line2,
-                                     self.city, self.state, self.zipcode)
+                                        self.city, self.state, self.zipcode)
 
 
 @python_2_unicode_compatible
@@ -90,7 +90,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_('First Name'), max_length=120, blank=True)
     last_name = models.CharField(_('Last Name'), max_length=120, blank=True)
     email = models.EmailField(_('email address'), unique=True, db_index=True)
-    phone = models.CharField(max_length=10,null = True, blank = True)
+    phone = models.CharField(max_length=10, null=True, blank=True)
     age = models.PositiveSmallIntegerField(blank=True, null=True)
     gender = models.CharField(
         max_length=1, choices=GENDER_CHOICES.items(), default='M')
@@ -103,11 +103,10 @@ class User(AbstractBaseUser, PermissionsMixin):
                                               'active. Unselect this instead of deleting accounts.')
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
     uhash_token = models.CharField(max_length=60, blank=True)
-    
-    REQUIRED_FIELDS= []
+
+    REQUIRED_FIELDS = []
     USERNAME_FIELD = 'email'
     objects = UserManager()
-
 
     class Meta:
         verbose_name = _('user')
@@ -138,6 +137,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.groups.add(g)
         self.save()
         return True
+
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

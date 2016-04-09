@@ -56,6 +56,7 @@ class UserSerializer(serializers.ModelSerializer):
         # ud.set_unusable_password()
         return ud
 
+
 class OwnerSerializer(serializers.ModelSerializer):
 
     address = AddSerializer(many=False)
@@ -63,11 +64,10 @@ class OwnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'first_name', 'last_name', 'email',
-                   'age', 'address', 'groups')
+                  'age', 'address', 'groups')
         depth = 1
         readonlyfields = ('id', 'groups')
         write_only_fields = ('password',)
-
 
     def create(self, validated_data):
         address_data = validated_data.pop('address')
@@ -78,8 +78,7 @@ class OwnerSerializer(serializers.ModelSerializer):
         add.save()
         ud.address = add
         ud.save()
-    
+
         ud.add_to_group('OWNER')
         ud.save()
         return ud
-

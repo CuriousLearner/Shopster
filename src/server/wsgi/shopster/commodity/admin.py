@@ -9,7 +9,8 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('order_id', 'get_products', 'price', 'ordered_on', 'ordered_by')
+    list_display = ('order_id', 'get_products',
+                    'price', 'ordered_on', 'ordered_by')
 
     # def save_model(self, request, obj, form, change):
     #     # custom stuff here
@@ -18,7 +19,8 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class Order_ItemAdmin(admin.ModelAdmin):
-    list_display = ('order_item_id', 'order_id', 'product_id', 'quantity', 'status')
+    list_display = ('order_item_id', 'order_id',
+                    'product_id', 'quantity', 'status')
 
 
 class CategoryAdmin(admin.ModelAdmin):

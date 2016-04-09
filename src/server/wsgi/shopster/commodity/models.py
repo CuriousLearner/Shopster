@@ -51,11 +51,12 @@ def create_hash_token(sender, instance=None, created=False, **kwargs):
         instance.save()
 
 
-
 class Order_Item(models.Model):
     order_item_id = models.AutoField(primary_key=True)
-    order_id = models.ForeignKey('Order', models.SET_NULL, null=True, blank=True)
-    product_id = models.ForeignKey('Product', models.SET_NULL, null=True, blank=True)
+    order_id = models.ForeignKey(
+        'Order', models.SET_NULL, null=True, blank=True)
+    product_id = models.ForeignKey(
+        'Product', models.SET_NULL, null=True, blank=True)
     price = models.IntegerField()
     name = models.CharField(max_length=100)
     quantity = models.IntegerField()
@@ -79,7 +80,8 @@ class Order(models.Model):
     ordered_on = models.DateTimeField(default=timezone.now)
     ordered_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, models.SET_NULL, null=True, blank=True)
-    status = models.CharField(choices=STATUS_CHOICES, max_length=1, default="O")
+    status = models.CharField(choices=STATUS_CHOICES,
+                              max_length=1, default="O")
     is_completed = models.BooleanField(default=False)
 
     def get_products(self):
@@ -108,8 +110,6 @@ class Order(models.Model):
 
 # pre_save.connect(update_total_price_of_products, sender=Order,
 #                  dispatch_uid="update_total_price_of_products")
-
-
 
 
 class Category(models.Model):

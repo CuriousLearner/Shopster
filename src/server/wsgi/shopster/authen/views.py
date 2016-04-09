@@ -90,13 +90,11 @@ def person_detail(request, pk):
         user.save()
         return HttpResponse(status=204)
 
+
 @api_view(['GET'])
 def home(request):
     if request.method == 'GET':
         return HttpResponse("API is working")
-
-
-
 
 
 @api_view(['POST'])
@@ -176,4 +174,4 @@ def add_owner(request):
 #             }
 #             return JSONResponse(content, status=200)
 #         else:
-#             return JSONResponse({"Error": "Invalid username/password"}, status=401)
+# return JSONResponse({"Error": "Invalid username/password"}, status=401)

@@ -10,16 +10,17 @@ from django.contrib.auth.forms import UserChangeForm as DjangoUserChangeForm
 from django.contrib.auth.forms import UserCreationForm as DjangoUserCreationForm
 
 
-
 # Forms
 # ----------------------------------------------------------------------------
 class MyUserCreationForm(DjangoUserCreationForm):
+
     class Meta:
         model = User
         fields = ("email",)
 
 
 class MyUserChangeForm(DjangoUserChangeForm):
+
     class Meta:
         model = User
         fields = '__all__'
@@ -47,7 +48,8 @@ class UserAdmin(AuthUserAdmin):
     readonly_fields = ('date_joined', 'last_login')
     form = MyUserChangeForm
     add_form = MyUserCreationForm
-    list_display = ('email', 'first_name', 'last_name', 'is_active', 'uhash_token')
+    list_display = ('email', 'first_name', 'last_name',
+                    'is_active', 'uhash_token')
     list_filter = ('is_superuser', 'is_active')
     search_fields = ('first_name', 'last_name', 'email')
     ordering = ('email',)

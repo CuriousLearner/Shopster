@@ -5,7 +5,8 @@ from .models import Coupon, EWallet, Transaction
 
 
 class CouponAdmin(admin.ModelAdmin):
-    list_display = ('coupon_id', 'coupon_code', 'price', 'added_on', 'used_on', 'used_by')
+    list_display = ('coupon_id', 'coupon_code', 'price',
+                    'added_on', 'used_on', 'used_by')
 
 
 class EWalletAdmin(admin.ModelAdmin):

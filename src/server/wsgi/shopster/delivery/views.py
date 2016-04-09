@@ -25,7 +25,7 @@ class JSONResponse(HttpResponse):
         super(JSONResponse, self).__init__(content, **kwargs)
 
 
-@api_view(['POST',])
+@api_view(['POST', ])
 @csrf_exempt
 def check_delivery_or_inhand(request):
     '''
@@ -61,35 +61,35 @@ def check_delivery_or_inhand(request):
             delivery_request.save()
             # If home delivery, then find idle delivery person and
             # assign him the order
-            if delivery_type == 'H': # Home Delivery
+            if delivery_type == 'H':  # Home Delivery
                 # Getting all Delivery Person that are IDLE
                 delivery_person_qs = DeliveryPerson.objects.filter(status='I')
                 idle_delivery_persons = list(delivery_person_qs[:1])
                 if idle_delivery_persons:
-                    delivery_person =  idle_delivery_persons[0]
+                    delivery_person = idle_delivery_persons[0]
                 else:
                     delivery_person = None
                     content = {"Message": "No Delivery Person available"}
-                    return JSONResponse(content,status=200)
+                    return JSONResponse(content, status=200)
                 if delivery_person:
                     delivery_request.delivered_by = delivery_person
                     delivery_request.save()
-                    order.status = 'T' # In-Transit
+                    order.status = 'T'  # In-Transit
                     order.save()
-                    delivery_person.status = 'D' # Delivering
+                    delivery_person.status = 'D'  # Delivering
                     delivery_person.save()
                     content = {"Message": "Delivery Person Assigned"}
-                    return JSONResponse(content,status=200)
+                    return JSONResponse(content, status=200)
             else:
                 # Delivery type is not home delivery
                 content = {"Message": "No Delivery Person\n InHand Delivery"}
-                return JSONResponse(content,status=200)
+                return JSONResponse(content, status=200)
         else:
             content = {"Message": "Order is not packaged yet!"}
-            return JSONResponse(content,status=403)
+            return JSONResponse(content, status=403)
 
 
-@api_view(['POST',])
+@api_view(['POST', ])
 @csrf_exempt
 def delivery_verification(request):
     '''
@@ -112,8 +112,8 @@ def delivery_verification(request):
         ordered_by_user_hash = user.uhash_token
         if uhash_token == ordered_by_user_hash:
             # Delivery Confirmed
-            order.status = 'D' # Delivered
-            delivery_person.status = 'I' # Idle
+            order.status = 'D'  # Delivered
+            delivery_person.status = 'I'  # Idle
             order.save()
             delivery_person.save()
             content = {"Message": "Delivered"}
@@ -121,7 +121,6 @@ def delivery_verification(request):
         else:
             content = {"Message": "Customer not matched"}
             return JSONResponse(content, status=200)
-
 
 
 @csrf_exempt

@@ -30,5 +30,3 @@ class DeliveryRequest(models.Model):
 
 class DeliveryPerson(User):
     status = models.CharField(choices=STATUS_CHOICES, max_length=1)
-
-
