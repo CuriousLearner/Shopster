@@ -35,8 +35,6 @@ class JSONResponse(HttpResponse):
 
 @api_view(['GET', 'POST'])
 @csrf_exempt
-# @authentication_classes((TokenAuthentication, SessionAuthentication, BasicAuthentication))
-# @permission_classes((IsAuthenticated))
 def person_list(request):
     """
     List all code snippets, or create a new snippet.
@@ -70,6 +68,8 @@ def person_list(request):
 
 @api_view(['GET', 'DELETE'])
 @csrf_exempt
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 # @authentication_classes((TokenAuthentication, SessionAuthentication, BasicAuthentication))
 # @permission_classes((IsAuthenticated,))
 def person_detail(request, pk):
@@ -99,6 +99,8 @@ def home(request):
 
 @api_view(['POST'])
 @csrf_exempt
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 # @authentication_classes((TokenAuthentication, SessionAuthentication, BasicAuthentication))
 # @permission_classes((IsAuthenticated,))
 def add_group(request, pk):
@@ -118,6 +120,8 @@ def add_group(request, pk):
 
 @api_view(['POST'])
 @csrf_exempt
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 # @authentication_classes((TokenAuthentication, SessionAuthentication, BasicAuthentication))
 # @permission_classes((IsAuthenticated,))
 def add_owner(request):

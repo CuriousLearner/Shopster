@@ -3,7 +3,9 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from commodity.models import Order
 from .models import DeliveryRequest, DeliveryPerson
@@ -25,8 +27,10 @@ class JSONResponse(HttpResponse):
         super(JSONResponse, self).__init__(content, **kwargs)
 
 
-@api_view(['POST', ])
 @csrf_exempt
+@api_view(['POST', ])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 def check_delivery_or_inhand(request):
     '''
     When packaged:
@@ -89,8 +93,10 @@ def check_delivery_or_inhand(request):
             return JSONResponse(content, status=403)
 
 
-@api_view(['POST', ])
 @csrf_exempt
+@api_view(['POST', ])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 def delivery_verification(request):
     '''
     Verification:
@@ -125,6 +131,8 @@ def delivery_verification(request):
 
 @csrf_exempt
 @api_view(['GET', 'POST'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 def delivery_person_list(request):
     """
     List all products, or create a new product.
@@ -145,6 +153,8 @@ def delivery_person_list(request):
 
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 def delivery_person_detail(request, pk):
     """
     Retrieve, update or delete a Product.

@@ -4,8 +4,9 @@ from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
-from rest_framework.decorators import api_view
-
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Order, EWallet, Transaction, Coupon
 from authen.models import User
@@ -26,6 +27,9 @@ class JSONResponse(HttpResponse):
 
 
 @csrf_exempt
+@api_view(['POST'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 def pay_for_order(request):
     '''
     Pay for the given order
@@ -75,6 +79,9 @@ def pay_for_order(request):
 
 
 @csrf_exempt
+@api_view(['POST'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 def recharge_wallet(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
@@ -103,6 +110,9 @@ def recharge_wallet(request):
 
 
 @csrf_exempt
+@api_view(['GET'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 def get_wallet_details(request, pk):
     if request.method == 'GET':
         try:
