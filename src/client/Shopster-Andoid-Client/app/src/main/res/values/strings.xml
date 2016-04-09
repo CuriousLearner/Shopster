@@ -29,5 +29,6 @@
         <item>Male</item>
         <item>Female</item>
     </array>
+    <string name="label_logout">Logout</string>
 
 </resources>

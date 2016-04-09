@@ -36,5 +36,11 @@ public class Utilities {
     }
 
 
+    public static void clearAllSharedPreferences(Context ctx) {
+        SharedPreferences.Editor spe = ctx.getSharedPreferences(Config.getSharedPrefKey(), 0).edit();
+        spe.clear();
+        spe.apply();
+    }
+
 
 }

@@ -91,4 +91,10 @@ public class MainActivity extends AppCompatActivity {
             Utilities.writeDebugLog("User is not logged in.");
         }
     }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        redirectIfLoggedIn();
+    }
 }
