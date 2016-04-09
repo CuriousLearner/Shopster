@@ -73,7 +73,11 @@ def order_list(request):
     List all code Order, or create a new Order.
     """
     if request.method == 'GET':
-        order = Order.objects.all()
+        status = request.GET.get('status')
+        if status:
+            order = Order.objects.filter(status=status)
+        else:
+            order = Order.objects.all()
         serializer = OrderSerializer(order, many=True)
         return JSONResponse(serializer.data)
 

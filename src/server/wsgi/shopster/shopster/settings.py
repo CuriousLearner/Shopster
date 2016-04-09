@@ -18,7 +18,7 @@ environ.Env.read_env() # reading .env file
 SITE_ROOT = root()
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
+WSGI_DIR = os.path.dirname(BASE_DIR)
 AUTH_USER_MODEL = 'authen.User'
 
 
@@ -29,12 +29,20 @@ AUTH_USER_MODEL = 'authen.User'
 SECRET_KEY = env('SECRET_KEY') # Raises ImproperlyConfigured exception if SECRET_KEY not in os.environ
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG') # False if not in os.environ
+# DEBUG = env('DEBUG') # False if not in os.environ
+DEBUG = os.environ.get('DEBUG') == 'True'
+
+# are abhi wo direct hi utha raha hai env se hata rakha hai
 
 # TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] #shi hai?
 
+# STATIC_ROOT = os.path.join(WSGI_DIR, 'static', 'collected_static')
+if 'OPENSHIFT_REPO_DIR' in os.environ:
+    STATIC_ROOT = os.path.join(os.environ.get('OPENSHIFT_REPO_DIR'), 'wsgi', 'static')
+else:
+    STATIC_ROOT = os.path.join(WSGI_DIR, 'static/'.strip("/"))
 
 # Application definition
 
