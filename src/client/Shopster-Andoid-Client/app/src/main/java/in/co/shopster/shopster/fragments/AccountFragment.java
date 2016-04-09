@@ -17,7 +17,7 @@ import in.co.shopster.shopster.R;
 /**
  * Created by vikram on 14/3/16.
  */
-public class HomeFragment extends Fragment {
+public class AccountFragment extends Fragment {
 
     private View view;
 
@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(
-                            HomeFragment.this.getContext(),
+                            AccountFragment.this.getContext(),
                             "Hello fragment",
                             Toast.LENGTH_SHORT
                     ).show();

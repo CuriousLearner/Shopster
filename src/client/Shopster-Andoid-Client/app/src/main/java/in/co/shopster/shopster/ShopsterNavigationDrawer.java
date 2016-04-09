@@ -2,7 +2,6 @@ package in.co.shopster.shopster;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -10,7 +9,7 @@ import com.joanzapata.android.iconify.IconDrawable;
 import com.joanzapata.android.iconify.Iconify;
 
 import in.co.shopster.shopster.fragments.CartFragment;
-import in.co.shopster.shopster.fragments.HomeFragment;
+import in.co.shopster.shopster.fragments.AccountFragment;
 import in.co.shopster.shopster.fragments.WalletFragment;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
@@ -24,10 +23,10 @@ public class ShopsterNavigationDrawer extends MaterialNavigationDrawer {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        MaterialSection homeSection  = newSection(
+        MaterialSection accountSection = newSection(
                 "Account",
                 new IconDrawable(this, Iconify.IconValue.fa_money),
-                new HomeFragment()
+                new AccountFragment()
         );
 
         MaterialSection cartSection = newSection(
@@ -42,11 +41,12 @@ public class ShopsterNavigationDrawer extends MaterialNavigationDrawer {
                 new WalletFragment()
         );
 
-        this.addSection(homeSection);
 
         this.addSection(cartSection);
 
         this.addSection(walletSection);
+
+        this.addSection(accountSection);
 
         this.setDefaultSectionLoaded(0);
         disableLearningPattern();
