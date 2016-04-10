@@ -30,13 +30,13 @@ SECRET_KEY = env('SECRET_KEY') # Raises ImproperlyConfigured exception if SECRET
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = env('DEBUG') # False if not in os.environ
-DEBUG = os.environ.get('DEBUG') == 'True'
-
-# are abhi wo direct hi utha raha hai env se hata rakha hai
+DEBUG = os.environ.get('DEBUG')
 
 # TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['*'] #shi hai?
+# ALLOWED_HOSTS = ['*']
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 # STATIC_ROOT = os.path.join(WSGI_DIR, 'static', 'collected_static')
 if 'OPENSHIFT_REPO_DIR' in os.environ:
@@ -55,6 +55,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
     'authen',
     'commodity',
     'wallet',
@@ -63,6 +64,7 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
