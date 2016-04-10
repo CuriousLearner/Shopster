@@ -14,7 +14,7 @@ public class Product {
 //        "category_id": null
 //    }
     //@TODO: Create order-item model, modify CartAdapter to use order-item model
-    long pid, quantity, category_id;
+    long pid, quantity, category_id, max_quantity;
     float price;
     String name, hash_token;
 
@@ -25,6 +25,7 @@ public class Product {
         this.price = price;
         this.name = name;
         this.hash_token = hashToken;
+        this.max_quantity = quantity;
     }
 
     public String toString() {
@@ -34,6 +35,15 @@ public class Product {
                 "Category ID : "+this.category_id+"\n"+
                 "Price : "+this.price+"\n"+
                 "Name : "+this.name+"\n"+
-                "Hash token : "+this.hash_token+"\n";
+                "Hash token : "+this.hash_token+"\n"+
+                "Max quantity : "+this.max_quantity+"\n";
     }
+
+    public String getName() { return this.name; }
+
+    public long getQuantity() { return this.quantity; }
+
+    public float getPrice() { return this.getPrice(); }
+
+    public void setQuantity(long quantity) { this.quantity = quantity;  }
 }

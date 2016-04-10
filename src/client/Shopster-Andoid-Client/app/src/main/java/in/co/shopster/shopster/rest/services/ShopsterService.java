@@ -8,6 +8,7 @@ import in.co.shopster.shopster.rest.models.responses.ShopsterToken;
 import retrofit.http.Body;
 import retrofit.Call;
 import retrofit.http.GET;
+import retrofit.http.Header;
 import retrofit.http.POST;
 import retrofit.http.Path;
 
@@ -26,6 +27,6 @@ public interface ShopsterService {
     Call<Customer> register(@Body Customer customer);
 
     @GET("/api/products/{hash}")
-    Call<Product> getProductDetails(@Path("hash") String hash);
+    Call<Product> getProductDetails(@Header("Authorization") String authToken, @Path("hash") String hash);
 
 }

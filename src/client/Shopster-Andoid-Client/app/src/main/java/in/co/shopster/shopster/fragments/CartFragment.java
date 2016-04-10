@@ -22,8 +22,17 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import in.co.shopster.shopster.Config;
 import in.co.shopster.shopster.R;
 import in.co.shopster.shopster.Utilities;
+import in.co.shopster.shopster.rest.RestClient;
+import in.co.shopster.shopster.rest.models.OrderItem;
+import in.co.shopster.shopster.rest.models.Product;
+import in.co.shopster.shopster.rest.services.ShopsterService;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by vikram on 3/4/16.
@@ -35,6 +44,7 @@ public class CartFragment extends Fragment {
     Button add;
     CartAdapter ca;
     List<CartInfo> cartItems = new ArrayList();
+    ArrayList<Product> orderItems = new ArrayList<>();
     String title,price,quantity;
     int i=0;
     @Bind(R.id.btn_add_to_cart)
@@ -55,14 +65,14 @@ public class CartFragment extends Fragment {
             addToCartBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Utilities.showToast("Hello", container.getContext(), false);
+                    Utilities.showToast("Scan the product QR code", container.getContext(), false);
                     IntentIntegrator intentIntegrator = new IntentIntegrator(
                             CartFragment.this.getActivity());
                     Utilities.writeDebugLog("Initiating QR Code scan");
                     intentIntegrator
                             .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES)
                             .setCameraId(0)
-                            .setPrompt("Scan Customer's QR Code")
+                            .setPrompt("Scan Product QR Code")
                             .setBeepEnabled(true)
                             .initiateScan();
                 }
@@ -87,17 +97,50 @@ public class CartFragment extends Fragment {
         Utilities.writeDebugLog("Scan Result : Raw bytes : " + scanResult.getRawBytes());
         String productTitle = scanResult.getContents();
         //@TODO: Continue from here, call API, add product to list
-        if(productTitle != null && !productTitle.isEmpty()) {
-            CartInfo ci = new CartInfo();
-            ci.price = "100";
-            ci.quantity = "1";
-            ci.title = scanResult.getContents();
-            cartItems.add(ci);
-            ca.notifyDataSetChanged();
-            Utilities.showToast("Item added to cart !!!", CartFragment.this.getContext(), false);
-        } else {
-            Utilities.showToast("Scan failed !!!", CartFragment.this.getContext(), false);
-        }
+
+        RestClient.init(Config.getShopsterApiHost());
+
+        ShopsterService shopsterService = RestClient.getRetrofit().create(ShopsterService.class);
+
+        String userAuthToken = "Token "+Utilities.getSharedPreference(CartFragment.this.getContext(), Config.getShopsterTokenKey()),
+               productHash = scanResult.getContents();
+
+        Call<Product> productCall =  shopsterService.getProductDetails(userAuthToken, productHash);
+        productCall.enqueue(new Callback<Product>() {
+            @Override
+            public void onResponse(Response<Product> response, Retrofit retrofit) {
+                Utilities.showToast("Yoo !!!", CartFragment.this.getActivity().getApplicationContext(), true);
+                Utilities.writeDebugLog("Product response code : "+response.code());
+                if(response.code() == 200) {
+                    Utilities.writeDebugLog("Product found : "+response.body());
+                    orderItems.add(response.body());
+                    Utilities.writeDebugLog("List of products : " + orderItems.toString());
+                    ca.notifyDataSetChanged();
+                    Utilities.showToast("Product added successfully", CartFragment.this.getActivity().getApplicationContext(), false);
+                } else {
+                    Utilities.showToast("Invalid QR code !!!", CartFragment.this.getActivity().getApplicationContext(), false);
+                    Utilities.writeDebugLog("Response : " + response.raw());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Utilities.showToast("Server did not respond, scan failed !!!", CartFragment.this.getContext(), true);
+            }
+        });
+
+
+//        if(productTitle != null && !productTitle.isEmpty()) {
+//            CartInfo ci = new CartInfo();
+//            ci.price = "100";
+//            ci.quantity = "1";
+//            ci.title = scanResult.getContents();
+//            cartItems.add(ci);
+//            ca.notifyDataSetChanged();
+//            Utilities.showToast("Item added to cart !!!", CartFragment.this.getContext(), false);
+//        } else {
+//            Utilities.showToast("Scan failed !!!", CartFragment.this.getContext(), false);
+//        }
 
 
     }
@@ -106,11 +149,20 @@ public class CartFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         starting();
+
+        recList = (RecyclerView) getActivity().findViewById(R.id.cart);
+        add=(Button)getActivity().findViewById(R.id.add);
+        recList.setHasFixedSize(false);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recList.setLayoutManager(llm);
+        ca = new CartAdapter(createList());
+        recList.setAdapter(ca);
     }
 
-    private List<CartInfo> createList() {
-
-        return cartItems;
+    private List<Product> createList() {
+          return orderItems;
+//        return cartItems;
     }
 
     public void starting()
