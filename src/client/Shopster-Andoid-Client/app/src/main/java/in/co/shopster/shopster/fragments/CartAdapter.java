@@ -18,6 +18,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     public CartAdapter(List<CartInfo> mainList) {
         this.mainList = mainList;
     }
+
     @Override
     public int getItemCount() {
         return mainList.size();
@@ -41,9 +42,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     public static class CartViewHolder extends RecyclerView.ViewHolder {
         protected TextView title;
-
         protected TextView price;
         protected TextView quantity;
+
+
         public CartViewHolder(View v) {
             super(v);
             title =  (TextView) v.findViewById(R.id.title);

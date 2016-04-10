@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Rest Client
 
-        RestClient.init(ShopsterService.BASE_URL);
+        RestClient.init(Config.getShopsterApiHost());
 
         this.retrofit = RestClient.getRetrofit();
 
@@ -64,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(allInputsValid()) {
+                    Utilities.writeDebugLog("Host : "+Config.getShopsterApiHost());
                     Utilities.showToast(
                             "Logging into Shopster, please wait",
                             LoginActivity.this,

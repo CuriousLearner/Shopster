@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.btn_test)
     Button testBtn;
 
+    @Bind(R.id.btn_api_host_config)
+    Button configureApiHostBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +76,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent openNavigationDrawer = new Intent(MainActivity.this, ShopsterNavigationDrawer.class);
                 MainActivity.this.startActivity(openNavigationDrawer);
+            }
+        });
+
+        configureApiHostBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent configureApiHostIntent = new Intent(MainActivity.this, APIConfigActivity.class);
+                MainActivity.this.startActivity(configureApiHostIntent);
             }
         });
 

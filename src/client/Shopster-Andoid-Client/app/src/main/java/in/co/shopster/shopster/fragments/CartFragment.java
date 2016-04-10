@@ -86,6 +86,7 @@ public class CartFragment extends Fragment {
         Utilities.writeDebugLog("Scan Result : Orientation : " + scanResult.getOrientation());
         Utilities.writeDebugLog("Scan Result : Raw bytes : " + scanResult.getRawBytes());
         String productTitle = scanResult.getContents();
+        //@TODO: Continue from here, call API, add product to list
         if(productTitle != null && !productTitle.isEmpty()) {
             CartInfo ci = new CartInfo();
             ci.price = "100";

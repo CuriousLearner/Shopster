@@ -32,12 +32,22 @@
             android:layout_height="50dp" />
 
         <Button
+            android:id="@+id/btn_api_host_config"
+            android:layout_marginTop="50dp"
+            android:text="@string/label_configure_api_host"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            />
+
+        <Button
             android:id="@+id/btn_test"
             android:layout_marginTop="50dp"
             android:text="test"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             />
+
+
 
 
     </LinearLayout>

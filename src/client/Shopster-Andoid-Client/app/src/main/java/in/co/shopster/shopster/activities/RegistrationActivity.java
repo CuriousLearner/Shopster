@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import in.co.shopster.shopster.Config;
 import in.co.shopster.shopster.R;
 import in.co.shopster.shopster.Utilities;
 import in.co.shopster.shopster.rest.RestClient;
@@ -147,7 +148,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                     Utilities.writeDebugLog("Customer object : \n" + customer.toString());
 
-                    RestClient.init(ShopsterService.BASE_URL);
+                    RestClient.init(Config.getDebugLogTag());
                     RegistrationActivity.this.shopsterService = RestClient.getRetrofit().create(ShopsterService.class);
 
                     Call registerCall = RegistrationActivity.this.shopsterService.register(customer);

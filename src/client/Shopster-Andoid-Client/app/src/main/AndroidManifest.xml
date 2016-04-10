@@ -30,6 +30,10 @@
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.APIConfigActivity"
+            android:label="@string/title_activity_apiconfig"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

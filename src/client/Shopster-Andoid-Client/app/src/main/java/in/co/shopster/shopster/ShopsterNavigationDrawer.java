@@ -63,7 +63,7 @@ public class ShopsterNavigationDrawer extends MaterialNavigationDrawer {
 
         if(scanResult != null) {
              CartFragment.getInstance().onQRCodeScanned(scanResult);
-             // @TODO : Call get product details API here
+
         }
     }
 }

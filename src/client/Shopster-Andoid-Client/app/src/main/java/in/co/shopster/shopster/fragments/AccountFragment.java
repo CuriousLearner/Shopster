@@ -15,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import in.co.shopster.shopster.R;
 import in.co.shopster.shopster.Utilities;
+import in.co.shopster.shopster.activities.APIConfigActivity;
 import in.co.shopster.shopster.activities.MainActivity;
 
 /**
@@ -26,6 +27,9 @@ public class AccountFragment extends Fragment {
 
     @Bind(R.id.btn_logout)
     public Button logoutBtn;
+
+    @Bind(R.id.btn_api_host_config)
+    public Button apiHostConfigBtn;
 
     @Nullable
     @Override
@@ -41,6 +45,14 @@ public class AccountFragment extends Fragment {
                     Utilities.showToast("Logged out of Shopster ...", AccountFragment.this.getContext(), true);
                     Intent restartShopsterIntent = new Intent(AccountFragment.this.getContext(), MainActivity.class);
                     AccountFragment.this.startActivity(restartShopsterIntent);
+                }
+            });
+
+            apiHostConfigBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent configureApiHost = new Intent(AccountFragment.this.getContext(), APIConfigActivity.class);
+                    AccountFragment.this.startActivity(configureApiHost);
                 }
             });
 

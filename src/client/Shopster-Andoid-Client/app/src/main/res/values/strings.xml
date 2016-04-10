@@ -31,6 +31,12 @@
     </array>
     <string name="label_logout">Logout</string>
     <string name="label_contact_number">Contact Number</string>
+    <string name="title_activity_apiconfig">APIConfigActivity</string>
+    <string name="label_api_host">API Host Address</string>
+    <string name="hint_api_host">Example : 192.168.1.1 …</string>
+    <string name="label_configure">Configure</string>
+    <string name="label_configure_api_host">Configure API Host</string>
+
 
 
 </resources>
