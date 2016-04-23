@@ -1,0 +1,55 @@
+package in.co.shopster.shopster_delivery_client.fragments;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+
+import java.util.Set;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import in.co.shopster.shopster_delivery_client.R;
+import in.co.shopster.shopster_delivery_client.Utilities;
+import in.co.shopster.shopster_delivery_client.activities.LoginActivity;
+import in.co.shopster.shopster_delivery_client.activities.MainActivity;
+
+public class SettingsFragment extends Fragment {
+
+
+    @Bind(R.id.btn_logout)
+    Button logoutBtn;
+
+    private View view;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if(view == null) {
+            view = inflater.inflate(R.layout.fragment_settings, container, false);
+
+            ButterKnife.bind(this, view);
+
+            logoutBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Context ctx = SettingsFragment.this.getActivity().getApplicationContext();
+                    Utilities.clearAllSharedPreferences(ctx);
+                    Utilities.showToast("Successfully logged out of Shopster Delivery Manager ...", ctx, true);
+                    Intent restartAppIntent = new Intent(SettingsFragment.this.getActivity(), MainActivity.class);
+                    SettingsFragment.this.startActivity(restartAppIntent);
+                }
+            });
+
+        }
+        return view;
+    }
+
+
+}
