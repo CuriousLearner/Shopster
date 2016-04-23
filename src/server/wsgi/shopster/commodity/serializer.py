@@ -80,7 +80,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
                   'name', 'quantity', 'status')
 
 
-class CategorySerialize(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
