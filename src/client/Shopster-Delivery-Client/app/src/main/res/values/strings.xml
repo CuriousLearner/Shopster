@@ -36,6 +36,8 @@
     <string name="label_configure">Configure</string>
     <string name="label_refresh">Refresh</string>
     <string name="label_configure_api_host">Configure API Host</string>
+    <string name="placeholder_dots">…</string>
+    <string name="placeholder_delivery_status">Idle, press refresh to get a delivery assigned</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
