@@ -123,7 +123,7 @@ public class DeliveryManagerFragment extends Fragment {
                                     Utilities.showToast("You've been assigned a delivery", ctx, true);
                                     deliveryStatusText.setText("Delivery assigned : " + delivery.getOrderId());
                                     Utilities.setSharedPreference(ctx, Config.getShopsterDeliveryObjQueueIdKey(), delivery.getQueueId() + "");
-                                    Utilities.setSharedPreference(ctx, Config.getShopsterDeliveryObjOrderIdKey(), delivery.getOrderId()+"");
+                                    Utilities.setSharedPreference(ctx, Config.getShopsterDeliveryObjOrderIdKey(), delivery.getOrderId() + "");
                                     Utilities.setSharedPreference(ctx, Config.getShopsterDeliveryObjDeliveredByKey(), delivery.getDeliveredBy()+"");
                                     Utilities.setSharedPreference(ctx, Config.getShopsterDeliveryObjIsDeliveredKey(), delivery.isDelivered()+"");
                                     Utilities.setSharedPreference(ctx, Config.getShopsterDeliveryObjDeliveryTypeKey(), delivery.getDeliveryType()+"");
@@ -247,7 +247,8 @@ public class DeliveryManagerFragment extends Fragment {
 
             @Override
             public void onFailure(Throwable t) {
-
+                Utilities.writeDebugLog("Verify delivery : request failed : reason : "+t.toString());
+                Utilities.showToast("Verification failed !!!", ctx, false);
             }
         });
 
