@@ -1,13 +1,17 @@
 package in.co.shopster.shopster_delivery_client;
 
+import android.content.Intent;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.joanzapata.android.iconify.IconDrawable;
 import com.joanzapata.android.iconify.Iconify;
 
 import in.co.shopster.shopster_delivery_client.fragments.DeliveryManagerFragment;
 import in.co.shopster.shopster_delivery_client.fragments.SettingsFragment;
+import in.co.shopster.shopster_delivery_client.rest.models.Delivery;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.neokree.materialnavigationdrawer.elements.MaterialSection;
 
@@ -41,6 +45,20 @@ public class ShopsterNavigationDrawer extends MaterialNavigationDrawer {
         disableLearningPattern();
 
         currentDrawer = this;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Utilities.writeDebugLog("In onActivity Result");
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(
+                requestCode, resultCode, data);
+
+        if(scanResult != null) {
+            DeliveryManagerFragment.getInstance().onQRCodeScanned(scanResult);
+
+
+        }
     }
 
 }

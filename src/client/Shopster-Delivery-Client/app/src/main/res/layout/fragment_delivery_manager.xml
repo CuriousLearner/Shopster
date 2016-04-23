@@ -32,6 +32,13 @@
             android:textSize="30sp"
             />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/btn_verify_delivery"
+            android:visibility="gone"
+            android:text="@string/label_verify_delivery"
+            />
 
     </LinearLayout>
 

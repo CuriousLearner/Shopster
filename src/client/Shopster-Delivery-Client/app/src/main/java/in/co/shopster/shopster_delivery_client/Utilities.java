@@ -25,9 +25,9 @@ public class Utilities {
     }
 
     public static void setSharedPreference(Context ctx, String prefKey, String prefVal) {
-        SharedPreferences.Editor she = ctx.getSharedPreferences(Config.getSharedPrefKey(), 0).edit();
-        she.putString(prefKey, prefVal);
-        she.apply();
+        SharedPreferences.Editor spe = ctx.getSharedPreferences(Config.getSharedPrefKey(), 0).edit();
+        spe.putString(prefKey, prefVal);
+        spe.apply();
     }
 
     public static String getSharedPreference(Context ctx, String prefKey) {
@@ -35,6 +35,11 @@ public class Utilities {
         return sp.getString(prefKey, "");
     }
 
+    public static void removeSharedPreference(Context ctx, String prefKey) {
+        SharedPreferences.Editor spe = ctx.getSharedPreferences(Config.getSharedPrefKey(), 0).edit();
+        spe.remove(prefKey);
+        spe.apply();
+    }
 
     public static void clearAllSharedPreferences(Context ctx) {
         SharedPreferences.Editor spe = ctx.getSharedPreferences(Config.getSharedPrefKey(), 0).edit();

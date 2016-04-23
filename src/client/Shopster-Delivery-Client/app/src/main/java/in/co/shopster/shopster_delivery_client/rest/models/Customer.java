@@ -26,11 +26,11 @@ public class Customer {
      "password": "rawpass"
      }
      */
-    String firstName, lastName, email, password, uhash_token;
+    String firstName, lastName, email, password, uhash_token, phone;
     byte age;
     char gender;
     Address address;
-    long phone, id;
+    long id;
 
 
     public Customer(
@@ -41,7 +41,7 @@ public class Customer {
             byte age,
             char gender,
             Address address,
-            long phone,
+            String phone,
             long id,
             String uhash_token
     ) {
@@ -59,13 +59,14 @@ public class Customer {
 
 
     public String toString() {
+        String addressRepresentation = (address != null) ? address.toString(): "";
         return "First Name : "+firstName+"\n"+
                 "Last Name : "+lastName+"\n"+
                 "Email : "+email+"\n"+
                 "Password : "+password+"\n"+
                 "Age : "+age+"\n"+
                 "Gender : "+gender+"\n"+
-                "Address : "+address.toString()+"\n"+
+                "Address : "+addressRepresentation+"\n"+
                 "Phone : "+phone+"\n";
     }
 

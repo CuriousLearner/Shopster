@@ -3,6 +3,8 @@ package in.co.shopster.shopster_delivery_client.rest.services;
 import in.co.shopster.shopster_delivery_client.rest.models.Customer;
 import in.co.shopster.shopster_delivery_client.rest.models.Delivery;
 import in.co.shopster.shopster_delivery_client.rest.models.LoginCredentials;
+import in.co.shopster.shopster_delivery_client.rest.models.requests.VerifyDeliveryRequest;
+import in.co.shopster.shopster_delivery_client.rest.models.responses.ShopsterGenericResponse;
 import in.co.shopster.shopster_delivery_client.rest.models.responses.ShopsterToken;
 import retrofit.Call;
 import retrofit.http.Body;
@@ -27,5 +29,8 @@ public interface ShopsterService {
 
     @GET("/api/deliveryrequest/{user_id}/")
     Call<Delivery> checkDeliveryAssignment(@Header("Authorization") String authToken, @Path("user_id") String userId);
+
+    @POST("/api/delivery/verify/")
+    Call<ShopsterGenericResponse> verifyDelivery(@Header("Authorization") String authToken, @Body VerifyDeliveryRequest verifyDeliveryRequest);
 
 }

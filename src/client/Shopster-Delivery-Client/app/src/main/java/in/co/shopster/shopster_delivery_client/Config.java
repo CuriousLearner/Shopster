@@ -19,6 +19,18 @@ public class Config {
 
     private static String SHOPSTER_USER_HASH_SP_KEY = "SHOPSTER-UHASH";
 
+    private static String SHOPSTER_DELIVERY_OBJ_QUEUED_ID_SP_KEY = "SHOPSTER-DELIVERY-OBJ-QID";
+
+    private static String SHOPSTER_DELIVERY_OBJ_ORDER_ID_SP_KEY = "SHOPSTER-DELIVERY-OBJ-ORDER-ID";
+
+    private static String SHOPSTER_DELIVERY_OBJ_DELIVERED_BY_SP_KEY = "SHOPSTER-DELIVERY-OBJ-DELIVERED-BY";
+
+    private static String SHOPSTER_DELIVERY_OBJ_IS_DELIVERED_SP_KEY = "SHOPSTER-DELIVERY-OBJ-IS-DELIVERED";
+
+    private static String SHOPSTER_DELIVERY_OBJ_DELIVERY_TYPE_SP_KEY = "SHOPSTER-DEIVERY-OBJ-DELIVERY-TYPE";
+
+
+
     public static String getDebugLogTag() { return Config.DEBUG_LOG_TAG; }
 
     public static void enableDebugLogs() {
@@ -37,12 +49,24 @@ public class Config {
 
     public static String getShopsterTokenKey() { return Config.SHOPSTER_TOKEN_SP_KEY; }
 
-    public static String getShopsterApiHost() { return SHOPSTER_API_HOST; };
+    public static String getShopsterApiHost() { return SHOPSTER_API_HOST; }
 
-    public static String getShopsterUserIdKey() { return SHOPSTER_USER_ID_SP_KEY; };
+    public static String getShopsterUserIdKey() { return SHOPSTER_USER_ID_SP_KEY; }
 
 
-    public static String getShopsterUserHashKey() { return SHOPSTER_USER_HASH_SP_KEY; };
+    public static String getShopsterUserHashKey() { return SHOPSTER_USER_HASH_SP_KEY; }
+
+    public static String getShopsterDeliveryObjQueueIdKey() { return SHOPSTER_DELIVERY_OBJ_QUEUED_ID_SP_KEY; }
+
+
+    public static String getShopsterDeliveryObjOrderIdKey() { return SHOPSTER_DELIVERY_OBJ_ORDER_ID_SP_KEY; }
+
+    public static String getShopsterDeliveryObjDeliveredByKey() { return SHOPSTER_DELIVERY_OBJ_DELIVERED_BY_SP_KEY; }
+
+
+    public static String getShopsterDeliveryObjIsDeliveredKey() { return SHOPSTER_DELIVERY_OBJ_IS_DELIVERED_SP_KEY; }
+
+    public static String getShopsterDeliveryObjDeliveryTypeKey() { return SHOPSTER_DELIVERY_OBJ_DELIVERY_TYPE_SP_KEY; }
 
 
 

@@ -1,5 +1,6 @@
 package in.co.shopster.shopster_delivery_client.fragments;
 
+import android.app.UiAutomation;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import com.journeyapps.barcodescanner.Util;
 
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,6 +24,7 @@ import in.co.shopster.shopster_delivery_client.R;
 import in.co.shopster.shopster_delivery_client.Utilities;
 import in.co.shopster.shopster_delivery_client.activities.LoginActivity;
 import in.co.shopster.shopster_delivery_client.activities.MainActivity;
+import in.co.shopster.shopster_delivery_client.rest.models.Delivery;
 
 public class SettingsFragment extends Fragment {
 
@@ -61,10 +64,21 @@ public class SettingsFragment extends Fragment {
         String shopsterApiToken = Utilities.getSharedPreference(ctx, Config.getShopsterTokenKey());
         String userId = Utilities.getSharedPreference(ctx, Config.getShopsterUserIdKey());
         String userHash = Utilities.getSharedPreference(ctx, Config.getShopsterUserHashKey());
+        String queueId = Utilities.getSharedPreference(ctx, Config.getShopsterDeliveryObjQueueIdKey());
+        String orderId = Utilities.getSharedPreference(ctx, Config.getShopsterDeliveryObjOrderIdKey());
+        String isDelivered = Utilities.getSharedPreference(ctx, Config.getShopsterDeliveryObjIsDeliveredKey());
+        String deliveredBy = Utilities.getSharedPreference(ctx, Config.getShopsterDeliveryObjDeliveredByKey());
+        String deliveryType = Utilities.getSharedPreference(ctx, Config.getShopsterDeliveryObjDeliveryTypeKey());
 
         Utilities.writeDebugLog("User data : \nAPI key : "+shopsterApiToken+
                 "\nUser ID : "+userId+
-                "\nUser hash : "+userHash);
+                "\nUser hash : "+userHash+
+                "\nQueue ID : "+queueId+
+                "\nOrder ID : "+orderId+
+                "\nIs delivered : "+isDelivered+
+                "\nDelivered by : "+deliveredBy+
+                "\nDelivery type : "+deliveryType
+        );
     }
 
 }

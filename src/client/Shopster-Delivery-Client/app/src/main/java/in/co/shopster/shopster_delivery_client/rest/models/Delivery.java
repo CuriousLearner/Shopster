@@ -7,11 +7,11 @@ public class Delivery {
 
     /**
      * {
-     "queue_id": 1,
-     "delivery_type": "H",
-     "is_delivered": false,
-     "order_id": 3,
-     "delivered_by": 3
+     "queue_id": 1, *
+     "delivery_type": "H", *
+     "is_delivered": false, *
+     "order_id": 3, *
+     "delivered_by": 3 *
      }
      */
 
@@ -37,5 +37,16 @@ public class Delivery {
     }
 
     public long getOrderId() { return this.order_id; }
+
+
+    public long getQueueId() { return this.queue_id; }
+
+
+    public long getDeliveredBy() { return this.delivered_by; }
+
+
+    public char getDeliveryType() { return this.delivery_type; }
+
+    public boolean isDelivered() { return this.is_delivered; }
 
 }
