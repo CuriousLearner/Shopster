@@ -17,5 +17,13 @@
         android:text="@string/label_login"
         />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/btn_host_config"
+        android:layout_marginTop="300dp"
+        android:text="@string/label_configure_api_host"
+        />
+
 
 </RelativeLayout>

@@ -21,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.btn_login_to_shopster)
     Button loginBtn;
 
+    @Bind(R.id.btn_host_config)
+    Button hostConfigButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +52,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
                 MainActivity.this.startActivity(loginIntent);
+            }
+        });
+
+        hostConfigButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent configureApiHostIntent = new Intent(MainActivity.this, DynamicApiHostConfigActivity.class);
+                MainActivity.this.startActivity(configureApiHostIntent);
             }
         });
 

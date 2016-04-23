@@ -20,6 +20,14 @@
             android:text="@string/label_logout"
             />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/btn_host_config"
+            android:layout_marginTop="50dp"
+            android:text="@string/label_configure_api_host"
+            />
+
     </LinearLayout>
 
 </FrameLayout>

@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 import in.co.shopster.shopster_delivery_client.Config;
 import in.co.shopster.shopster_delivery_client.R;
 import in.co.shopster.shopster_delivery_client.Utilities;
+import in.co.shopster.shopster_delivery_client.activities.DynamicApiHostConfigActivity;
 import in.co.shopster.shopster_delivery_client.activities.LoginActivity;
 import in.co.shopster.shopster_delivery_client.activities.MainActivity;
 import in.co.shopster.shopster_delivery_client.rest.models.Delivery;
@@ -31,6 +32,9 @@ public class SettingsFragment extends Fragment {
 
     @Bind(R.id.btn_logout)
     Button logoutBtn;
+
+    @Bind(R.id.btn_host_config)
+    Button hostConfigBtn;
 
     private View view;
 
@@ -52,6 +56,14 @@ public class SettingsFragment extends Fragment {
                     Utilities.showToast("Successfully logged out of Shopster Delivery Manager ...", ctx, true);
                     Intent restartAppIntent = new Intent(SettingsFragment.this.getActivity(), MainActivity.class);
                     SettingsFragment.this.startActivity(restartAppIntent);
+                }
+            });
+
+            hostConfigBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent configureApiHostIntent = new Intent(SettingsFragment.this.getActivity(), DynamicApiHostConfigActivity.class);
+                    SettingsFragment.this.getActivity().startActivity(configureApiHostIntent);
                 }
             });
 
@@ -79,6 +91,8 @@ public class SettingsFragment extends Fragment {
                 "\nDelivered by : "+deliveredBy+
                 "\nDelivery type : "+deliveryType
         );
+
+        Utilities.writeDebugLog("API Host : "+Config.getShopsterApiHost());
     }
 
 }

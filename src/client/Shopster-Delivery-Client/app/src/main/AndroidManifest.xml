@@ -17,17 +17,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ShopsterNavigationDrawer"
             android:theme="@style/ShopsterNavigationDrawerTheme" />
-
-
+        <activity
+            android:name=".activities.DynamicApiHostConfigActivity"
+            android:label="@string/title_activity_dynamic_api_host_config"
+            android:theme="@style/AppTheme.NoActionBar" />
+        
     </application>
 
 </manifest>
