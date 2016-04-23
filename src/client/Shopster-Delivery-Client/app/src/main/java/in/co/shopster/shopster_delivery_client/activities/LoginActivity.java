@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.journeyapps.barcodescanner.Util;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import in.co.shopster.shopster_delivery_client.Config;
@@ -18,6 +20,7 @@ import in.co.shopster.shopster_delivery_client.R;
 import in.co.shopster.shopster_delivery_client.ShopsterNavigationDrawer;
 import in.co.shopster.shopster_delivery_client.Utilities;
 import in.co.shopster.shopster_delivery_client.rest.RestClient;
+import in.co.shopster.shopster_delivery_client.rest.models.Customer;
 import in.co.shopster.shopster_delivery_client.rest.models.LoginCredentials;
 import in.co.shopster.shopster_delivery_client.rest.models.responses.ShopsterToken;
 import in.co.shopster.shopster_delivery_client.rest.services.ShopsterService;
@@ -63,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                             passwordEdit.getText().toString()
                     ));
 
+                    final Context ctx = LoginActivity.this.getApplicationContext();
                     loginCall.enqueue(new Callback<ShopsterToken>() {
                         @Override
                         public void onResponse(Response<ShopsterToken> response, Retrofit retrofit) {
@@ -76,9 +80,48 @@ public class LoginActivity extends AppCompatActivity {
                                         apiToken
                                 );
                                 Utilities.writeDebugLog("API token received : " + apiToken);
-                                Utilities.showToast("Welcome to Shopster Delivery Manager", LoginActivity.this.getApplicationContext(), true);
-                                Intent openNavDrawer = new Intent(LoginActivity.this, ShopsterNavigationDrawer.class);
-                                LoginActivity.this.startActivity(openNavDrawer);
+                                Utilities.writeDebugLog("Calling : getUserByEmail API");
+                                String shopsterApiToken = Utilities.getSharedPreference(ctx, Config.getShopsterTokenKey());
+
+                                Call<Customer> userCall = shopsterService.getUserByEmail("Token "+shopsterApiToken,emailEdit.getText().toString());
+                                userCall.enqueue(new Callback<Customer>() {
+                                    @Override
+                                    public void onResponse(Response<Customer> response, Retrofit retrofit) {
+                                        Utilities.writeDebugLog("Get user by email : onResponse");
+                                        Customer customer = response.body();
+                                        Utilities.writeDebugLog("Get user by email : response code : " + response.code());
+                                        Utilities.writeDebugLog("Customer object : \n" + customer.toString());
+
+                                        if (response.code() == 200) {
+                                            String  userHash = customer.getUserHash(),
+                                                    userId = customer.getId()+"";
+
+                                            Utilities.writeDebugLog("User ID received : "+userId);
+                                            Utilities.writeDebugLog("User hash received : "+userHash);
+                                            Utilities.setSharedPreference(ctx, Config.getShopsterUserIdKey(), userId);
+                                            Utilities.setSharedPreference(ctx, Config.getShopsterUserHashKey(), userHash);
+
+                                            Utilities.showToast("Welcome to Shopster Delivery Manager", LoginActivity.this.getApplicationContext(), true);
+                                            Intent openNavDrawer = new Intent(LoginActivity.this, ShopsterNavigationDrawer.class);
+                                            LoginActivity.this.startActivity(openNavDrawer);
+
+
+                                        } else {
+                                            Utilities.writeDebugLog("Unexpected getUserByEmail API response : " + response.code());
+                                            Utilities.showToast("Login failed", ctx, false);
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Throwable t) {
+                                        Utilities.writeDebugLog("Get user by email : failed : reason : \n" + t.toString());
+                                        Utilities.showToast("Login failed", ctx, false);
+                                    }
+                                });
+
+
+
 
 //                            } else if(response.body() == null) {
 //                                Utilities.writeDebugLog("Login : response is null");
@@ -86,13 +129,15 @@ public class LoginActivity extends AppCompatActivity {
                                 Utilities.showToast("Invalid email/password combination.", LoginActivity.this.getApplicationContext(), true);
                             } else {
                                 Utilities.writeDebugLog("Login : unexpected response code : "+response.code());
+
+                                Utilities.showToast("Login failed", ctx, false);
                             }
 
                         }
 
                         @Override
                         public void onFailure(Throwable t) {
-                            Utilities.showToast("Login failed", LoginActivity.this.getApplicationContext(), true);
+                            Utilities.showToast("Login failed", ctx, true);
                             Utilities.writeDebugLog("Login : request failed : \n"+t.toString());
                         }
                     });

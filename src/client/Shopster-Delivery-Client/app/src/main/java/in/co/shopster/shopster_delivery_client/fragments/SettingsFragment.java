@@ -11,10 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.journeyapps.barcodescanner.Util;
+
 import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import in.co.shopster.shopster_delivery_client.Config;
 import in.co.shopster.shopster_delivery_client.R;
 import in.co.shopster.shopster_delivery_client.Utilities;
 import in.co.shopster.shopster_delivery_client.activities.LoginActivity;
@@ -36,6 +39,8 @@ public class SettingsFragment extends Fragment {
 
             ButterKnife.bind(this, view);
 
+            logStoredData(SettingsFragment.this.getActivity().getApplicationContext());
+
             logoutBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -51,5 +56,15 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
+
+    private void logStoredData(Context ctx) {
+        String shopsterApiToken = Utilities.getSharedPreference(ctx, Config.getShopsterTokenKey());
+        String userId = Utilities.getSharedPreference(ctx, Config.getShopsterUserIdKey());
+        String userHash = Utilities.getSharedPreference(ctx, Config.getShopsterUserHashKey());
+
+        Utilities.writeDebugLog("User data : \nAPI key : "+shopsterApiToken+
+                "\nUser ID : "+userId+
+                "\nUser hash : "+userHash);
+    }
 
 }

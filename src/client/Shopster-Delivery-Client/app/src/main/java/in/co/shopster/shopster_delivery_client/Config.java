@@ -15,6 +15,10 @@ public class Config {
 
     private static String SHOPSTER_TOKEN_SP_KEY = "SHOPSTER-API-TOKEN";
 
+    private static String SHOPSTER_USER_ID_SP_KEY = "SHOPSTER-UID";
+
+    private static String SHOPSTER_USER_HASH_SP_KEY = "SHOPSTER-UHASH";
+
     public static String getDebugLogTag() { return Config.DEBUG_LOG_TAG; }
 
     public static void enableDebugLogs() {
@@ -34,6 +38,13 @@ public class Config {
     public static String getShopsterTokenKey() { return Config.SHOPSTER_TOKEN_SP_KEY; }
 
     public static String getShopsterApiHost() { return SHOPSTER_API_HOST; };
+
+    public static String getShopsterUserIdKey() { return SHOPSTER_USER_ID_SP_KEY; };
+
+
+    public static String getShopsterUserHashKey() { return SHOPSTER_USER_HASH_SP_KEY; };
+
+
 
     public static void setShopsterApiHost(String shopsterApiHost) { Config.SHOPSTER_API_HOST = shopsterApiHost; }
 
