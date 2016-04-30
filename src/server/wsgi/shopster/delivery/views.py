@@ -11,7 +11,7 @@ from commodity.models import Order
 from .models import DeliveryRequest, DeliveryPerson
 from authen.models import User
 
-from .serializers import DeliveryPersonSerializer
+from .serializers import DeliveryPersonSerializer, DeliveryRequestSerializer
 
 # Create your views here.
 
@@ -62,7 +62,6 @@ def check_delivery_or_inhand(request):
             delivery_request = DeliveryRequest(order_id=order,
                                                delivery_type=delivery_type,
                                                is_delivered=is_delivered)
-            delivery_request.save()
             # If home delivery, then find idle delivery person and
             # assign him the order
             if delivery_type == 'H':  # Home Delivery
@@ -82,6 +81,7 @@ def check_delivery_or_inhand(request):
                     order.save()
                     delivery_person.status = 'D'  # Delivering
                     delivery_person.save()
+                    delivery_request.save()
                     content = {"Message": "Delivery Person Assigned"}
                     return JSONResponse(content, status=200)
             else:
@@ -178,4 +178,48 @@ def delivery_person_detail(request, pk):
 
     elif request.method == 'DELETE':
         delivery_person.delete()
+        return HttpResponse(status=204)
+
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
+def delivery_request_list(request):
+    """
+    List all products, or create a new product.
+    """
+    if request.method == 'GET':
+        delivery_request = DeliveryRequest.objects.all()
+        serializer = DeliveryRequestSerializer(delivery_request, many=True)
+        return JSONResponse(serializer.data)
+
+
+@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
+def delivery_request_detail(request, pk):
+    """
+    Retrieve, update or delete a Product.
+    """
+    try:
+        delivery_request = DeliveryRequest.objects.get(delivered_by=pk)
+    except DeliveryRequest.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = DeliveryRequestSerializer(delivery_request)
+        return JSONResponse(serializer.data)
+
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = DeliveryRequestSerializer(delivery_request, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JSONResponse(serializer.data)
+        return JSONResponse(serializer.errors, status=400)
+
+    elif request.method == 'DELETE':
+        delivery_request.delete()
         return HttpResponse(status=204)

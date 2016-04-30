@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Shopster-Delivery-Client</string>
+    <string name="title_activity_registration">Register On Shopster</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="label_login">Login</string>
+    <string name="label_register">Register</string>
+    <string name="label_first_name">First Name</string>
+    <string name="label_last_name">Last Name</string>
+    <string name="label_age">Age</string>
+    <string name="label_gender">Gender</string>
+    <string name="label_address">Address</string>
+    <string name="label_line_1">Line 1</string>
+    <string name="label_line_2">Line 2</string>
+    <string name="label_city">City</string>
+    <string name="label_state">State</string>
+    <string name="label_zip_code">Zip-code</string>
+    <string name="title_activity_login">Shopster Login</string>
+    <string name="label_login_to_shopster">Login to Shopster </string>
+    <string name="label_register_on_shopster">Register on Shopster</string>
+    <string name="label_wallet_balance">Wallet Balance</string>
+    <string name="label_rupees">Rs.</string>
+    <string name="label_not_available">N. A.</string>
+    <string name="label_recharge_wallet">Recharge Wallet</string>
+    <string name="hint_coupon_code">Coupon code …</string>
+    <string name="label_recharge">Recharge</string>
+    <array name="genders">
+        <item>Male</item>
+        <item>Female</item>
+    </array>
+    <string name="label_logout">Logout</string>
+    <string name="label_contact_number">Contact Number</string>
+    <string name="title_activity_apiconfig">APIConfigActivity</string>
+    <string name="label_api_host">API Host Address</string>
+    <string name="hint_api_host">Example : 192.168.1.1 …</string>
+    <string name="label_configure">Configure</string>
+    <string name="label_refresh">Refresh</string>
+    <string name="label_configure_api_host">Configure API Host</string>
+    <string name="placeholder_dots">…</string>
+    <string name="placeholder_delivery_status">Idle, press refresh to get a delivery assigned</string>
+    <string name="label_verify_delivery">Verify Delivery</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_dynamic_api_host_config">DynamicApiHostConfigActivity</string>
+
+
+</resources>

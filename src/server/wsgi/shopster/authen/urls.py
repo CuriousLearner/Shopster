@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^$', views.home),
     url(r'^api/add_owner/$', views.add_owner),
     url(r'^api/login/$', obtain_auth_token),
+    url(r'^api/user/(?P<pk>.+)/$', views.get_person_by_email),
 ]

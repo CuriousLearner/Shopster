@@ -8,9 +8,5 @@ class AdminOnlyPermission(permissions.BasePermission):
     """
 
     def has_permission(self, request, view):
-        print(request.user)
-        print(request.user.groups)
-        # OWNER
-        print()
         if str(request.user.groups) == 'auth.Group.OWNER':
             return request.user

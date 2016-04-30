@@ -179,3 +179,21 @@ def add_owner(request):
 #             return JSONResponse(content, status=200)
 #         else:
 # return JSONResponse({"Error": "Invalid username/password"}, status=401)
+
+
+@api_view(['GET', 'DELETE'])
+@csrf_exempt
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
+def get_person_by_email(request, pk):
+    """
+    Retrieve, update or delete a code snippet.
+    """
+    try:
+        user = User.objects.get(email=pk)
+    except User.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = UserSerializer(user)
+        return JSONResponse(serializer.data)

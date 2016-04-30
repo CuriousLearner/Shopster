@@ -5,7 +5,8 @@ from .models import DeliveryRequest, DeliveryPerson
 
 
 class DeliveryRequestAdmin(admin.ModelAdmin):
-    list_display = ('queue_id', 'order_id', 'is_delivered')
+    list_display = ('queue_id', 'order_id', 'is_delivered',
+                    'delivery_type', 'delivered_by')
 
 
 class DeliveryPersonAdmin(admin.ModelAdmin):
