@@ -1,9 +1,11 @@
 package in.co.shopster.shopster_delivery_client.fragments;
 
 import android.content.Context;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,8 @@ import android.widget.TextView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.joanzapata.android.iconify.IconDrawable;
+import com.joanzapata.android.iconify.Iconify;
 import com.journeyapps.barcodescanner.Util;
 
 import org.json.JSONException;
@@ -39,8 +43,6 @@ import retrofit.Retrofit;
 
 public class DeliveryManagerFragment extends Fragment {
 
-    @Bind(R.id.btn_refresh)
-    Button refreshBtn;
 
     @Bind(R.id.btn_verify_delivery)
     Button verifyDeliveryBtn;
@@ -48,12 +50,14 @@ public class DeliveryManagerFragment extends Fragment {
     @Bind(R.id.text_delivery_status)
     TextView deliveryStatusText;
 
+    @Bind(R.id.fab_refresh)
+    FloatingActionButton refreshFab;
+
     private View view;
 
     ShopsterService shopsterService;
 
     static DeliveryManagerFragment currentFragment;
-
 
     public static DeliveryManagerFragment getInstance() {
         return currentFragment;
@@ -72,27 +76,30 @@ public class DeliveryManagerFragment extends Fragment {
 
             String assignedOrderId = Utilities.getSharedPreference(ctx, Config.getShopsterDeliveryObjOrderIdKey());
             if(!assignedOrderId.isEmpty()) {
-                deliveryStatusText.setText("Assigned order ID : "+assignedOrderId);
+                deliveryStatusText.setText("Assigned order ID : " + assignedOrderId);
                 verifyDeliveryBtn.setVisibility(View.VISIBLE);
-                refreshBtn.setVisibility(View.INVISIBLE);
+                refreshFab.setVisibility(View.INVISIBLE);
 
-                verifyDeliveryBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        IntentIntegrator intentIntegrator = new IntentIntegrator(
-                                DeliveryManagerFragment.this.getActivity());
-                        Utilities.writeDebugLog("Initiating QR Code scan");
-                        intentIntegrator
-                                .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES)
-                                .setCameraId(0)
-                                .setPrompt("Scan Customers' QR Code to verify delivery")
-                                .setBeepEnabled(true)
-                                .initiateScan();
-                    }
-                });
+
             }
 
-            refreshBtn.setOnClickListener(new View.OnClickListener() {
+            verifyDeliveryBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    IntentIntegrator intentIntegrator = new IntentIntegrator(
+                            DeliveryManagerFragment.this.getActivity());
+                    Utilities.writeDebugLog("Initiating QR Code scan");
+                    intentIntegrator
+                            .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES)
+                            .setCameraId(0)
+                            .setPrompt("Scan Customers' QR Code to verify delivery")
+                            .setBeepEnabled(true)
+                            .initiateScan();
+                }
+            });
+
+
+            refreshFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     test();
@@ -126,9 +133,9 @@ public class DeliveryManagerFragment extends Fragment {
                                     Utilities.setSharedPreference(ctx, Config.getShopsterDeliveryObjOrderIdKey(), delivery.getOrderId() + "");
                                     Utilities.setSharedPreference(ctx, Config.getShopsterDeliveryObjDeliveredByKey(), delivery.getDeliveredBy()+"");
                                     Utilities.setSharedPreference(ctx, Config.getShopsterDeliveryObjIsDeliveredKey(), delivery.isDelivered()+"");
-                                    Utilities.setSharedPreference(ctx, Config.getShopsterDeliveryObjDeliveryTypeKey(), delivery.getDeliveryType()+"");
+                                    Utilities.setSharedPreference(ctx, Config.getShopsterDeliveryObjDeliveryTypeKey(), delivery.getDeliveryType() + "");
                                     verifyDeliveryBtn.setVisibility(View.VISIBLE);
-                                    refreshBtn.setVisibility(View.GONE);
+                                    refreshFab.setVisibility(View.GONE);
                                     break;
                                 case 404 :
                                     Utilities.writeDebugLog("delivery check : 404 NOT FOUND");
@@ -150,8 +157,6 @@ public class DeliveryManagerFragment extends Fragment {
                                     "Check delivery : request failed : reason : "+t.toString());
                         }
                     });
-
-
 
                 }
             });
@@ -226,7 +231,7 @@ public class DeliveryManagerFragment extends Fragment {
                             Utilities.removeSharedPreference(ctx, Config.getShopsterDeliveryObjQueueIdKey());
                             deliveryStatusText.setText("Delivery succeeded ...");
                             verifyDeliveryBtn.setVisibility(View.GONE);
-                            refreshBtn.setVisibility(View.VISIBLE);
+                            refreshFab.setVisibility(View.VISIBLE);
 
 
                         } else if(responseMessage.equals("Customer not matched")) {
