@@ -36,7 +36,10 @@
     <string name="hint_api_host">Example : 192.168.1.1 …</string>
     <string name="label_configure">Configure</string>
     <string name="label_configure_api_host">Configure API Host</string>
-
+    <string name="title_activity_select_scanner">SelectScannerActivity</string>
+    <string name="label_qr_code">QR Code</string>
+    <string name="label_nfc">NFC</string>
+    <string name="title_scan_through">What do you want to scan ?</string>
 
 
 </resources>
