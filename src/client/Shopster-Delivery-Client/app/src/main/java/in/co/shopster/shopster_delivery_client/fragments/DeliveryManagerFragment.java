@@ -1,5 +1,6 @@
 package in.co.shopster.shopster_delivery_client.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
@@ -59,6 +60,8 @@ public class DeliveryManagerFragment extends Fragment {
 
     static DeliveryManagerFragment currentFragment;
 
+    private ProgressDialog progressDialog;
+
     public static DeliveryManagerFragment getInstance() {
         return currentFragment;
     }
@@ -103,6 +106,11 @@ public class DeliveryManagerFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     test();
+                    progressDialog = ProgressDialog.show(
+                            DeliveryManagerFragment.this.getContext(),
+                            "Refreshing",
+                            "Checking for new deliveries to be assigned ..."
+                    );
                     if(RestClient.getRetrofit() == null) {
                         RestClient.init(Config.getShopsterApiHost());
                     }
@@ -118,6 +126,7 @@ public class DeliveryManagerFragment extends Fragment {
 
                         @Override
                         public void onResponse(Response<Delivery> response, Retrofit retrofit) {
+                            progressDialog.dismiss();
                             int responseCode = response.code();
                             Utilities.writeDebugLog(
                                     "Delivery check : response code : "+responseCode);
@@ -153,6 +162,7 @@ public class DeliveryManagerFragment extends Fragment {
 
                         @Override
                         public void onFailure(Throwable t) {
+                            progressDialog.dismiss();
                             Utilities.writeDebugLog(
                                     "Check delivery : request failed : reason : "+t.toString());
                         }
@@ -211,9 +221,11 @@ public class DeliveryManagerFragment extends Fragment {
         final Call<ShopsterGenericResponse> verifyDeliveryCall =
                 shopsterService.verifyDelivery(authToken, verifyDeliveryRequest);
 
+        progressDialog = ProgressDialog.show(DeliveryManagerFragment.this.getContext(), "Processing", "Verifying delivery ...", false);
         verifyDeliveryCall.enqueue(new Callback<ShopsterGenericResponse>() {
             @Override
             public void onResponse(Response<ShopsterGenericResponse> response, Retrofit retrofit) {
+                progressDialog.dismiss();
                 int responseCode = response.code();
                 Utilities.writeDebugLog("Verify delivery : response code : "+responseCode);
                 switch(responseCode) {
@@ -221,7 +233,7 @@ public class DeliveryManagerFragment extends Fragment {
                         ShopsterGenericResponse sgr = response.body();
                         String responseMessage = sgr.getMessage();
                         if(responseMessage.equals("Delivered")) {
-                            Utilities.showToast("Verification successful", ctx, true);
+                            Utilities.showToast("Verification successful, delivery complete.", ctx, true);
                             Utilities.writeDebugLog("Verification succeeded");
                             // remove all delivery data
                             Utilities.removeSharedPreference(ctx, Config.getShopsterDeliveryObjIsDeliveredKey());
@@ -229,7 +241,7 @@ public class DeliveryManagerFragment extends Fragment {
                             Utilities.removeSharedPreference(ctx, Config.getShopsterDeliveryObjOrderIdKey());
                             Utilities.removeSharedPreference(ctx, Config.getShopsterDeliveryObjDeliveredByKey());
                             Utilities.removeSharedPreference(ctx, Config.getShopsterDeliveryObjQueueIdKey());
-                            deliveryStatusText.setText("Delivery succeeded ...");
+                            deliveryStatusText.setText(DeliveryManagerFragment.this.getContext().getResources().getString(R.string.placeholder_delivery_status));
                             verifyDeliveryBtn.setVisibility(View.GONE);
                             refreshFab.setVisibility(View.VISIBLE);
 
@@ -252,6 +264,7 @@ public class DeliveryManagerFragment extends Fragment {
 
             @Override
             public void onFailure(Throwable t) {
+                progressDialog.dismiss();
                 Utilities.writeDebugLog("Verify delivery : request failed : reason : "+t.toString());
                 Utilities.showToast("Verification failed !!!", ctx, false);
             }
