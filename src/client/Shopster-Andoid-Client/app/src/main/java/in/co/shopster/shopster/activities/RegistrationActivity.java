@@ -147,8 +147,8 @@ public class RegistrationActivity extends AppCompatActivity {
                     );
 
                     Utilities.writeDebugLog("Customer object : \n" + customer.toString());
-
-                    RestClient.init(Config.getDebugLogTag());
+                    RestClient.init(Config.getShopsterApiHost());
+                   // RestClient.init(Config.getDebugLogTag());
                     RegistrationActivity.this.shopsterService = RestClient.getRetrofit().create(ShopsterService.class);
 
                     Call registerCall = RegistrationActivity.this.shopsterService.register(customer);

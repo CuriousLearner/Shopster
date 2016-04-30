@@ -1,6 +1,7 @@
 package in.co.shopster.shopster.fragments;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +32,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     @Override
     public void onBindViewHolder(final CartViewHolder mainViewHolder, final int i) {
-        mainViewHolder.title.setText(orderItems.get(i).getName());
-        mainViewHolder.price.setText(orderItems.get(i).getPrice()+"");
+        Product pro = orderItems.get(i);
+        String title = pro.name;
+        String price = String.valueOf(pro.price);
+        Log.e("title",title);
+       // mainViewHolder.title.setText(orderItems.get(i).getName());
+        //mainViewHolder.price.setText(orderItems.get(i).getPrice()+"");
+        mainViewHolder.title.setText(title);
+        mainViewHolder.price.setText(price);
         mainViewHolder.quantity.setText("1");
     }
     @Override

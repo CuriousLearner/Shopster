@@ -17,6 +17,9 @@ import android.widget.TextView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,6 +116,9 @@ public class CartFragment extends Fragment {
                 Utilities.writeDebugLog("Product response code : "+response.code());
                 if(response.code() == 200) {
                     Utilities.writeDebugLog("Product found : "+response.body());
+                    Utilities.writeDebugLog("Product found : "+response.raw());
+                    Utilities.writeDebugLog("Product found : "+response.message());
+                    Utilities.writeDebugLog("Product found : "+response.hashCode());
                     orderItems.add(response.body());
                     Utilities.writeDebugLog("List of products : " + orderItems.toString());
                     ca.notifyDataSetChanged();
