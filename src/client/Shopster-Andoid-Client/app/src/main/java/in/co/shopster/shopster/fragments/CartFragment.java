@@ -1,6 +1,9 @@
 package in.co.shopster.shopster.fragments;
 
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.journeyapps.barcodescanner.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +32,7 @@ import butterknife.ButterKnife;
 import in.co.shopster.shopster.Config;
 import in.co.shopster.shopster.R;
 import in.co.shopster.shopster.Utilities;
+import in.co.shopster.shopster.activities.SelectScannerActivity;
 import in.co.shopster.shopster.rest.RestClient;
 import in.co.shopster.shopster.rest.models.OrderItem;
 import in.co.shopster.shopster.rest.models.Product;
@@ -56,6 +61,12 @@ public class CartFragment extends Fragment {
     private static CartFragment currentCart;
 
 
+    NfcAdapter mAdapter;
+    PendingIntent mPendingIntent;
+
+    private boolean isNfcSupported = false;
+
+
     public static CartFragment getInstance() { return currentCart; }
 
     @Nullable
@@ -68,18 +79,37 @@ public class CartFragment extends Fragment {
             addToCartBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Utilities.showToast("Scan the product QR code", container.getContext(), false);
-                    IntentIntegrator intentIntegrator = new IntentIntegrator(
-                            CartFragment.this.getActivity());
-                    Utilities.writeDebugLog("Initiating QR Code scan");
-                    intentIntegrator
-                            .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES)
-                            .setCameraId(0)
-                            .setPrompt("Scan Product QR Code")
-                            .setBeepEnabled(true)
-                            .initiateScan();
+                    Intent openSelectorIntent = new Intent(CartFragment.this.getActivity(), SelectScannerActivity.class);
+                    openSelectorIntent.putExtra("isNfcSupported", CartFragment.this.isNfcSupported);
+                    CartFragment.this.getActivity().startActivity(openSelectorIntent);
+
+//                    Utilities.showToast("Scan the product QR code", container.getContext(), false);
+//                    IntentIntegrator intentIntegrator = new IntentIntegrator(
+//                            CartFragment.this.getActivity());
+//                    Utilities.writeDebugLog("Initiating QR Code scan");
+//                    intentIntegrator
+//                            .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES)
+//                            .setCameraId(0)
+//                            .setPrompt("Scan Product QR Code")
+//                            .setBeepEnabled(true)
+//                            .initiateScan();
                 }
             });
+
+            Context ctx = this.getActivity().getApplicationContext();
+
+            mAdapter = NfcAdapter.getDefaultAdapter(this.getActivity().getApplicationContext());
+            if (mAdapter == null) {
+                //nfc not support your device.
+                Utilities.showToast("NFC is not supported on this device", ctx, true);
+                Utilities.writeDebugLog("NFC not supported");
+            } else {
+                Utilities.showToast("NFC is supported :) ", ctx, true);
+                Utilities.writeDebugLog("NFC is supported :)");
+                this.isNfcSupported = true;
+            }
+            mPendingIntent = PendingIntent.getActivity(this.getContext(), 0, new Intent(this.getContext(),
+                    getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
         }
         currentCart = this;
