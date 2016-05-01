@@ -11,6 +11,17 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="android:colorForeground">@color/black</item>-->
+        <!--<item name="colorAccent">@color/white</item>-->
+        <item name="drawerColor">@color/white</item>
+        <!--<item name="colorAccent">@color/white</item>-->
+        <!--<item name="drawerColor">@color/white</item>-->
+        <!--<item name="sectionStyle">@style/MySectionTheme</item>-->
+        <!--<item name="subheaderStyle">@style/MySubheaderTheme</item>-->
+        <item name="singleAccount">true</item>
+        <item name="rippleBackport">true</item>
+        <!--<item name="colorPrimary">@color/white</item>-->
+        <!--<item name="colorPrimaryDark">@color/white</item>-->
         <!--<item name="colorPrimary">#8bc34a</item>-->
         <!--<item name="colorPrimaryDark">#558b2f</item>-->
         <!--<item name="colorAccent">#FFFFFF</item>-->

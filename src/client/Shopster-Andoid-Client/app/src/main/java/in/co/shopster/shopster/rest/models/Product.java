@@ -14,9 +14,9 @@ public class Product {
 //        "category_id": null
 //    }
     //@TODO: Create order-item model, modify CartAdapter to use order-item model
-    long pid, quantity, category_id, max_quantity;
-    float price;
-    String name, hash_token;
+   public long pid, quantity, category_id, max_quantity;
+    public float price;
+   public String name, hash_token;
 
     public Product(long pid, String name, String hashToken, float price, long quantity,long categoryId) {
         this.pid = pid;

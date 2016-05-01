@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="in.co.shopster.shopster">
 
+    <uses-permission android:name="android.permission.NFC" />
+
+    <uses-feature android:name="android.hardware.nfc" />
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -22,7 +26,13 @@
         </activity>
         <activity
             android:name=".ShopsterNavigationDrawer"
-            android:theme="@style/ShopsterNavigationDrawerTheme" />
+            android:theme="@style/ShopsterNavigationDrawerTheme">
+            <intent-filter>
+                <action android:name="android.nfc.action.TAG_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.RegistrationActivity"
             android:label="@string/title_activity_registration"
@@ -34,7 +44,13 @@
         <activity
             android:name=".activities.APIConfigActivity"
             android:label="@string/title_activity_apiconfig"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.SelectScannerActivity"
+            android:label="@string/title_activity_select_scanner"
+            android:screenOrientation="portrait"
+            android:theme="@style/Base.V21.Theme.AppCompat.Light.Dialog">
+        </activity>
     </application>
 
 </manifest>

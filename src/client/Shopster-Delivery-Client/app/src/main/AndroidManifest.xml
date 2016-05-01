@@ -9,7 +9,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/ShopsterNavigationDrawerTheme">
         <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
             android:name=".activities.DynamicApiHostConfigActivity"
             android:label="@string/title_activity_dynamic_api_host_config"
             android:theme="@style/AppTheme.NoActionBar" />
-        
+
     </application>
 
 </manifest>

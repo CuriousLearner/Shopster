@@ -19,7 +19,7 @@ import it.neokree.materialnavigationdrawer.elements.MaterialSection;
  */
 public class ShopsterNavigationDrawer extends MaterialNavigationDrawer {
 
-    public static MaterialNavigationDrawer currentDrawer;
+    public static ShopsterNavigationDrawer currentDrawer;
 
     @Override
     public void init(Bundle savedInstanceState) {
@@ -65,5 +65,17 @@ public class ShopsterNavigationDrawer extends MaterialNavigationDrawer {
              CartFragment.getInstance().onQRCodeScanned(scanResult);
 
         }
+    }
+
+    public void scanQrCode() {
+        Utilities.showToast("Scan the product QR code", this, false);
+        IntentIntegrator intentIntegrator = new IntentIntegrator(this);
+        Utilities.writeDebugLog("Initiating QR Code scan");
+        intentIntegrator
+                .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES)
+                .setCameraId(0)
+                .setPrompt("Scan Product QR Code")
+                .setBeepEnabled(true)
+                .initiateScan();
     }
 }
