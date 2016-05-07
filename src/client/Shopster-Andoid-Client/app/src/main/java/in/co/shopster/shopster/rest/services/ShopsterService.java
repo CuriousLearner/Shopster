@@ -5,10 +5,13 @@ import java.util.List;
 
 import in.co.shopster.shopster.rest.models.Customer;
 import in.co.shopster.shopster.rest.models.CustomerLogin;
+import in.co.shopster.shopster.rest.models.DeliverySpecification;
 import in.co.shopster.shopster.rest.models.LoginCredentials;
 import in.co.shopster.shopster.rest.models.Order;
+import in.co.shopster.shopster.rest.models.PaymentDetails;
 import in.co.shopster.shopster.rest.models.Product;
 import in.co.shopster.shopster.rest.models.Recharge;
+import in.co.shopster.shopster.rest.models.responses.ShopsterGenericResponse;
 import in.co.shopster.shopster.rest.models.responses.ShopsterToken;
 import in.co.shopster.shopster.rest.models.wallet;
 import retrofit.http.Body;
@@ -48,4 +51,14 @@ public interface ShopsterService {
 
     @POST("/api/recharge/")
     Call<Recharge> rechargeCounpon(@Header("Authorization") String authToken, @Body Recharge recharge );
+
+    @GET("/api/orders/{order_id}")
+    Call<Order> getOrderById(@Header("Authorization") String authToken, @Path("order_id") String orderId);
+
+    @POST("/api/pay/")
+    Call<ShopsterGenericResponse> payForOrder(@Header("Authorization") String authToken, @Body PaymentDetails paymentDetails);
+
+    @POST("/api/delivery/")
+    Call<ShopsterGenericResponse> setDeliveryPreference(@Header("Authorization") String authToken, @Body DeliverySpecification deliverySpecification);
+
 }

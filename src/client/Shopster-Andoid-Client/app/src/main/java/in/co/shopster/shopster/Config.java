@@ -19,6 +19,18 @@ public class Config {
 
     private static String SHOPSTER_USER_Hash = "USER_Hash";
 
+    private static String SHOPSTER_ORDER_ID = "ORDER_ID";
+
+    private static String SHOPSTER_ORDER_STATUS = "ORDER_STATUS";
+
+    private static String SHOPSTER_ORDER_PRICE = "ORDER_PRICE";
+
+    private static String SHOPSTER_DELIVERY_PREF = "DELIVERY_PREF";
+
+
+
+
+
     public static String getDebugLogTag() { return Config.DEBUG_LOG_TAG; }
 
     public static void enableDebugLogs() {
@@ -42,6 +54,15 @@ public class Config {
     public static String getShopsterUserId(){ return Config.SHOPSTER_USER_ID; }
 
     public static String getSHOPSTER_USER_Hash(){ return Config.SHOPSTER_USER_Hash; }
+
+    public static String getShopsterOrderIdKey() { return Config.SHOPSTER_ORDER_ID; }
+
+    public static String getShopsterOrderStatusKey() { return Config.SHOPSTER_ORDER_STATUS; }
+
+    public static String getShopsterOrderPriceKey() { return Config.SHOPSTER_ORDER_PRICE; }
+
+    public static String getShopsterDeliveryPrefKey() { return Config.SHOPSTER_DELIVERY_PREF; }
+
 
     public static void setShopsterApiHost(String shopsterApiHost) { Config.SHOPSTER_API_HOST = shopsterApiHost; }
 

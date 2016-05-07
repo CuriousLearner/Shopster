@@ -49,8 +49,8 @@
             android:name=".activities.SelectScannerActivity"
             android:label="@string/title_activity_select_scanner"
             android:screenOrientation="portrait"
-            android:theme="@style/Base.V21.Theme.AppCompat.Light.Dialog">
-        </activity>
+            android:theme="@style/Base.V21.Theme.AppCompat.Light.Dialog"></activity>
+        <activity android:name=".activities.OrderSummaryActivity"></activity>
     </application>
 
 </manifest>

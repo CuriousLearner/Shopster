@@ -1,6 +1,7 @@
 package in.co.shopster.shopster.fragments;
 
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
@@ -34,6 +35,7 @@ import butterknife.ButterKnife;
 import in.co.shopster.shopster.Config;
 import in.co.shopster.shopster.R;
 import in.co.shopster.shopster.Utilities;
+import in.co.shopster.shopster.activities.OrderSummaryActivity;
 import in.co.shopster.shopster.activities.SelectScannerActivity;
 import in.co.shopster.shopster.rest.RestClient;
 import in.co.shopster.shopster.rest.models.Order;
@@ -71,6 +73,8 @@ public class CartFragment extends Fragment {
 
     private boolean isNfcSupported = false;
 
+
+    private ProgressDialog progressDialog;
 
     public static CartFragment getInstance() { return currentCart; }
 
@@ -143,11 +147,13 @@ public class CartFragment extends Fragment {
         String userAuthToken = "Token "+Utilities.getSharedPreference(CartFragment.this.getContext(), Config.getShopsterTokenKey()),
                productHash = scanResult.getContents();
 
-        Call<Product> productCall =  shopsterService.getProductDetails(userAuthToken, productHash);
+        final Call<Product> productCall =  shopsterService.getProductDetails(userAuthToken, productHash);
+        progressDialog = ProgressDialog.show(CartFragment.this.getActivity(), "Adding product to cart", "Fetching product details", false);
         productCall.enqueue(new Callback<Product>() {
             @Override
             public void onResponse(Response<Product> response, Retrofit retrofit) {
-                Utilities.showToast("Yoo !!!", CartFragment.this.getActivity().getApplicationContext(), true);
+                progressDialog.dismiss();
+                Utilities.showToast("Product successfully added to cart !!!", CartFragment.this.getActivity().getApplicationContext(), true);
                 Utilities.writeDebugLog("Product response code : "+response.code());
                 if(response.code() == 200) {
                     Utilities.writeDebugLog("Product found : "+response.body());
@@ -167,6 +173,8 @@ public class CartFragment extends Fragment {
 
             @Override
             public void onFailure(Throwable t) {
+                progressDialog.dismiss();
+                Utilities.writeDebugLog("onFailure : reason : "+t.toString());
                 Utilities.showToast("Server did not respond, scan failed !!!", CartFragment.this.getContext(), true);
             }
         });
@@ -244,24 +252,27 @@ public class CartFragment extends Fragment {
 
         Call<Order> placeOrderCall = shopsterService.placeOrder(authToken, order);
 
-
-
+        final Context ctx = CartFragment.this.getActivity().getApplicationContext();
+        progressDialog = ProgressDialog.show(CartFragment.this.getActivity(), "Placing your order", "Contacting server ...", false);
         placeOrderCall.enqueue(new Callback<Order>() {
             @Override
             public void onResponse(Response<Order> response, Retrofit retrofit) {
-
+                progressDialog.dismiss();
                 int responseCode = response.code();
                 Utilities.writeDebugLog("Place order : on response : response code "+responseCode);
                 switch(responseCode) {
-                    case 200:
-                        // success
-                        break;
                     case 201:
                         Utilities.writeDebugLog("Order Created ");
+                        Utilities.showToast("Order placed successfully !!!", ctx, true);
                         char status = response.body().getStatus();
                         long order_id = response.body().getOrderId();
                         long price = response.body().getPrice();
-                        Utilities.writeDebugLog("Status : "+status+" Order Id : "+order_id+ " price : "+price);
+                        Utilities.setSharedPreference(ctx, Config.getShopsterOrderIdKey(), order_id + "");
+                        Utilities.setSharedPreference(ctx, Config.getShopsterOrderPriceKey(), price + "");
+                        Utilities.setSharedPreference(ctx, Config.getShopsterOrderStatusKey(), status + "");
+                        Utilities.writeDebugLog("Status : " + status + " Order Id : " + order_id + " price : " + price);
+                        Intent openOrderSummaryIntent = new Intent(CartFragment.this.getActivity(), OrderSummaryActivity.class);
+                        CartFragment.this.getActivity().startActivity(openOrderSummaryIntent);
                         break;
                     default:
                         Utilities.writeDebugLog("Unexpected response code : "+responseCode);
@@ -272,6 +283,12 @@ public class CartFragment extends Fragment {
 
             @Override
             public void onFailure(Throwable t) {
+                progressDialog.dismiss();
+                Utilities.showToast(
+                        "Server did not respond. Could not place order !!!",
+                        CartFragment.this.getActivity().getApplicationContext(),
+                        true
+                );
                 Utilities.writeDebugLog("Place order failed : reason : "+t.toString());
             }
         });
