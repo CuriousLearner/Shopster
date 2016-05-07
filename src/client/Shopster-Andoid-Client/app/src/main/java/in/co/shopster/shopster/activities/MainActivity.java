@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.journeyapps.barcodescanner.Util;
+
 import java.util.List;
 
 import butterknife.Bind;
@@ -21,7 +23,9 @@ import in.co.shopster.shopster.R;
 import in.co.shopster.shopster.ShopsterNavigationDrawer;
 import in.co.shopster.shopster.Utilities;
 import in.co.shopster.shopster.rest.RestClient;
+import in.co.shopster.shopster.rest.models.CustomerLogin;
 import in.co.shopster.shopster.rest.models.ExampleUser;
+import in.co.shopster.shopster.rest.models.Order;
 import in.co.shopster.shopster.rest.services.ExampleService;
 import in.co.shopster.shopster.rest.services.ShopsterService;
 import retrofit.Retrofit;
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ButterKnife.bind(this);
+
 
         // Enabled debug logs
         Config.enableDebugLogs();

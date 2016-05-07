@@ -11,21 +11,24 @@ public class Product {
 //        "name": "Maggi",
 //        "hash_token": "79GqgP4XNvpRmY3Adbw2nwnaOlzj6LB8JQZ2KeME",
 //        "quantity": 23,
-//        "category_id": null
+//        "category_id": null,
+//        "status" : "O"
 //    }
     //@TODO: Create order-item model, modify CartAdapter to use order-item model
-   public long pid, quantity, category_id, max_quantity;
+    public long pid, quantity, category_id, max_quantity;
     public float price;
-   public String name, hash_token;
+    public String name, hash_token;
+    public char status;
 
-    public Product(long pid, String name, String hashToken, float price, long quantity,long categoryId) {
+    public Product(long pid, String name, String hashToken, float price, long quantity,long categoryId, char status) {
         this.pid = pid;
         this.quantity = quantity;
         this.category_id = categoryId;
         this.price = price;
         this.name = name;
         this.hash_token = hashToken;
-        this.max_quantity = quantity;
+        this.max_quantity = quantity; // bhai yeh kya hai ?? yr ye tune daal rkhi hai usmai product response mai jo quantity aati hai available wali wo aati hai, bhai par wo to initial jo quantitiy mein aayega wo hi hoga, chodd abhi isse baad mein dekhenge
+        this.status = status;
     }
 
     public String toString() {
@@ -36,8 +39,10 @@ public class Product {
                 "Price : "+this.price+"\n"+
                 "Name : "+this.name+"\n"+
                 "Hash token : "+this.hash_token+"\n"+
-                "Max quantity : "+this.max_quantity+"\n";
+                "Max quantity : "+this.max_quantity+"\n"+
+                "Status  : "+this.status+"\n";
     }
+
 
     public String getName() { return this.name; }
 

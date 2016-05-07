@@ -78,8 +78,9 @@ public class WalletFragment extends Fragment {
                     }
                     String userAuthToken = "Token "+Utilities.getSharedPreference(WalletFragment.this.getContext(), Config.getShopsterTokenKey());
                     WalletFragment.this.shopsterService = RestClient.getRetrofit().create(ShopsterService.class);
+                    String userid = Utilities.getSharedPreference(WalletFragment.this.getContext(), Config.getShopsterUserId());
                     Recharge recharge = new Recharge(
-                            "" + 4,
+                            userid,
                             couponCodeEdit.getText().toString()
                     );
                     Log.e("Couponcode", couponCodeEdit.getText().toString());
@@ -121,7 +122,9 @@ public class WalletFragment extends Fragment {
         RestClient.init(Config.getShopsterApiHost());
         ShopsterService shopsterService = RestClient.getRetrofit().create(ShopsterService.class);
         String userAuthToken = "Token " + Utilities.getSharedPreference(WalletFragment.this.getContext(), Config.getShopsterTokenKey());
-        Call<wallet> walletCall = shopsterService.getAmount(userAuthToken);
+        String userid = Utilities.getSharedPreference(WalletFragment.this.getContext(), Config.getShopsterUserId());
+        Utilities.writeDebugLog("UserId : "+userid);
+        Call<wallet> walletCall = shopsterService.getAmount(userAuthToken,Long.parseLong(userid));
         walletCall.enqueue(new Callback<wallet>() {
             @Override
             public void onResponse(Response<wallet> response, Retrofit retrofit) {

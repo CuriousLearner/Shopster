@@ -22,6 +22,7 @@ import in.co.shopster.shopster.Config;
 import in.co.shopster.shopster.R;
 import in.co.shopster.shopster.Utilities;
 import in.co.shopster.shopster.rest.RestClient;
+import in.co.shopster.shopster.rest.models.CustomerLogin;
 import in.co.shopster.shopster.rest.models.LoginCredentials;
 import in.co.shopster.shopster.rest.models.responses.ShopsterToken;
 import in.co.shopster.shopster.rest.services.ShopsterService;
@@ -31,6 +32,7 @@ import retrofit.Callback;
 import retrofit.Response;
 
 public class LoginActivity extends AppCompatActivity {
+    String email1;
 
     @Bind(R.id.edit_email)
     EditText emailEdit;
@@ -72,8 +74,9 @@ public class LoginActivity extends AppCompatActivity {
                     );
                     Config.enableDebugLogs();
                     LoginActivity.this.shopsterService =   retrofit.create(ShopsterService.class);
-                    String email = emailEdit.getText().toString(),
-                           password = passwordEdit.getText().toString();
+                    final String email = emailEdit.getText().toString();
+                    email1=email;
+                    final String password = passwordEdit.getText().toString();
 
                     LoginCredentials userLoginCredentials = new LoginCredentials(email, password);
 
@@ -89,7 +92,10 @@ public class LoginActivity extends AppCompatActivity {
                                 Utilities.writeDebugLog("User token : " + st.toString());
                                 Utilities.showToast("Login successful !!!", LoginActivity.this.getApplicationContext(), true);
                                 Utilities.setSharedPreference(LoginActivity.this.getApplicationContext(), Config.getShopsterTokenKey(), st.getToken());
+                                    getUser();
+
                                 Intent restartShopsterIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                restartShopsterIntent.putExtra("Email",email);
                                 LoginActivity.this.startActivity(restartShopsterIntent);
                             } else if(response.code() == 400) {
                                 Utilities.writeDebugLog("Email / password combination incorrect.");
@@ -130,5 +136,52 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+
+
+    void getUser()
+    {
+        Utilities.writeDebugLog("Email"+email1);
+        RestClient.init(Config.getShopsterApiHost());
+        ShopsterService shopsterService = RestClient.getRetrofit().create(ShopsterService.class);
+
+        String authToken = "Token "+Utilities.getSharedPreference(
+                this.getApplicationContext(), Config.getShopsterTokenKey());
+        Utilities.writeDebugLog("auth Token"+authToken);
+        retrofit.Call<CustomerLogin> getUserDetail = shopsterService.getUserDetails(authToken,email1);
+
+        getUserDetail.enqueue(new retrofit.Callback<CustomerLogin>() {
+            @Override
+            public void onResponse(retrofit.Response<CustomerLogin> response, Retrofit retrofit) {
+                int responseCode = response.code();
+                Utilities.writeDebugLog("Get User : on response : response code "+responseCode);
+                switch(responseCode) {
+                    case 200:
+                        // success
+
+                        Utilities.writeDebugLog("Successfully access details");
+                        long userId = response.body().getId();
+                        String uhash = response.body().getUhash();
+                        Utilities.writeDebugLog("Id : "+userId+" UHASH : "+uhash);
+                        Utilities.setSharedPreference(LoginActivity.this.getApplicationContext(), Config.getShopsterUserId(),""+userId);
+                        Utilities.setSharedPreference(LoginActivity.this.getApplicationContext(), Config.getSHOPSTER_USER_Hash(),uhash);
+                        break;
+                    default:
+                        Utilities.writeDebugLog("Unexpected response code : "+responseCode);
+                        break;
+
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+
+
     }
 }

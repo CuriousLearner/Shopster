@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -34,6 +36,7 @@ import in.co.shopster.shopster.R;
 import in.co.shopster.shopster.Utilities;
 import in.co.shopster.shopster.activities.SelectScannerActivity;
 import in.co.shopster.shopster.rest.RestClient;
+import in.co.shopster.shopster.rest.models.Order;
 import in.co.shopster.shopster.rest.models.OrderItem;
 import in.co.shopster.shopster.rest.models.Product;
 import in.co.shopster.shopster.rest.services.ShopsterService;
@@ -41,16 +44,18 @@ import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
+import retrofit.http.POST;
 
 /**
  * Created by vikram on 3/4/16.
  */
 public class CartFragment extends Fragment {
-
+    public static String[] Q = new String[50];
     private View view;
     RecyclerView recList;
-    Button add;
+    Button submit;
     CartAdapter ca;
+    ArrayList<Product> products = new ArrayList<Product>();
     List<CartInfo> cartItems = new ArrayList();
     ArrayList<Product> orderItems = new ArrayList<>();
     String title,price,quantity;
@@ -150,6 +155,7 @@ public class CartFragment extends Fragment {
                     Utilities.writeDebugLog("Product found : "+response.message());
                     Utilities.writeDebugLog("Product found : "+response.hashCode());
                     orderItems.add(response.body());
+                    products.add(response.body());
                     Utilities.writeDebugLog("List of products : " + orderItems.toString());
                     ca.notifyDataSetChanged();
                     Utilities.showToast("Product added successfully", CartFragment.this.getActivity().getApplicationContext(), false);
@@ -185,15 +191,6 @@ public class CartFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         starting();
-
-        recList = (RecyclerView) getActivity().findViewById(R.id.cart);
-        add=(Button)getActivity().findViewById(R.id.add);
-        recList.setHasFixedSize(false);
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recList.setLayoutManager(llm);
-        ca = new CartAdapter(createList());
-        recList.setAdapter(ca);
     }
 
     private List<Product> createList() {
@@ -205,31 +202,86 @@ public class CartFragment extends Fragment {
     {
         Log.e("Message", "super1");
         recList = (RecyclerView) getActivity().findViewById(R.id.cart);
-        add=(Button)getActivity().findViewById(R.id.add);
+        submit=(Button)getActivity().findViewById(R.id.submit);
         recList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
-        ca = new CartAdapter(createList());
+        ca = new CartAdapter(createList(),Q);
         recList.setAdapter(ca);
-        add.setOnClickListener(new View.OnClickListener() {
+        submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                title = "Title" + i;
-                price = "" + i;
-                quantity = "" + i;
-                CartInfo ci = new CartInfo();
-                ci.title = title;
-                ci.price = price;
-                ci.quantity = quantity;
-                cartItems.add(ci);
-                ca.notifyDataSetChanged();
-                i++;
-                Utilities.writeDebugLog("Result : " + String.valueOf(cartItems));
+                submitOrder();
             }
         });
     }
 
+    public void submitOrder()
+    {
+
+        String[] quantities = ca.allquant();
+        int l = ca.getItemCount();
+        for(int i=0;i<l;i++) {
+            Log.e("allQuantities", quantities[i]);
+            long k = Long.parseLong(quantities[i]);
+            Product prod = products.get(i);
+            prod.setQuantity(k);
+            prod.status = 'O';
+        }
+        Log.e("order", products.toString());
+        Order order = new Order("2", products, 0, 0, null, false, 'O');
+        Utilities.writeDebugLog("Order created : "+order.toString());
+
+        RestClient.init(Config.getShopsterApiHost());
+        ShopsterService shopsterService = RestClient.getRetrofit().create(ShopsterService.class);
+
+        String authToken = "Token "+Utilities.getSharedPreference(
+                this.getActivity().getApplicationContext(), Config.getShopsterTokenKey());
+
+
+
+
+        Call<Order> placeOrderCall = shopsterService.placeOrder(authToken, order);
+
+
+
+        placeOrderCall.enqueue(new Callback<Order>() {
+            @Override
+            public void onResponse(Response<Order> response, Retrofit retrofit) {
+
+                int responseCode = response.code();
+                Utilities.writeDebugLog("Place order : on response : response code "+responseCode);
+                switch(responseCode) {
+                    case 200:
+                        // success
+                        break;
+                    case 201:
+                        Utilities.writeDebugLog("Order Created ");
+                        char status = response.body().getStatus();
+                        long order_id = response.body().getOrderId();
+                        long price = response.body().getPrice();
+                        Utilities.writeDebugLog("Status : "+status+" Order Id : "+order_id+ " price : "+price);
+                        break;
+                    default:
+                        Utilities.writeDebugLog("Unexpected response code : "+responseCode);
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Utilities.writeDebugLog("Place order failed : reason : "+t.toString());
+            }
+        });
+    }
+
+
+    void balanceDeduction()
+    {
+        
+    }
 
 
 }

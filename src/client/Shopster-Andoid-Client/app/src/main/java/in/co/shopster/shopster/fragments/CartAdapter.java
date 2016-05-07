@@ -1,6 +1,8 @@
 package in.co.shopster.shopster.fragments;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +19,12 @@ import in.co.shopster.shopster.rest.models.Product;
  */
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
     private List<CartInfo> mainList;
-
+    public static String[] quant ;
     private List<Product> orderItems;
 
-
-    public CartAdapter(List<Product> orderItems) {
+    public CartAdapter(List<Product> orderItems,String[] a) {
         this.orderItems = orderItems;
+        this.quant = a;
     }
 
     @Override
@@ -41,6 +43,26 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         mainViewHolder.title.setText(title);
         mainViewHolder.price.setText(price);
         mainViewHolder.quantity.setText("1");
+        quant[i]="1";
+        mainViewHolder.quantity.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                quant[i]=s.toString();
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+                quant[i]=s.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                quant[i]=s.toString();
+            }
+        });
     }
     @Override
     public CartViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -65,5 +87,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         }
     }
 
+    String[] allquant()
+    {
+        return quant;
+    }
 
 }
