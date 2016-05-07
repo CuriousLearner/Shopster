@@ -115,11 +115,14 @@ def delivery_verification(request):
         user_mail = str(order.ordered_by)
         user = order.ordered_by
         delivery_person = DeliveryPerson.objects.get(id=dp)
+        delivery_request = DeliveryRequest.objects.get(order_id=order_id)
         ordered_by_user_hash = user.uhash_token
         if uhash_token == ordered_by_user_hash:
             # Delivery Confirmed
             order.status = 'D'  # Delivered
             delivery_person.status = 'I'  # Idle
+            delivery_request.is_delivered = True
+            delivery_request.save()
             order.save()
             delivery_person.save()
             content = {"Message": "Delivered"}
@@ -204,7 +207,7 @@ def delivery_request_detail(request, pk):
     Retrieve, update or delete a Product.
     """
     try:
-        delivery_request = DeliveryRequest.objects.get(delivered_by=pk)
+        delivery_request = DeliveryRequest.objects.get(delivered_by=pk, is_delivered=False)
     except DeliveryRequest.DoesNotExist:
         return HttpResponse(status=404)
 
