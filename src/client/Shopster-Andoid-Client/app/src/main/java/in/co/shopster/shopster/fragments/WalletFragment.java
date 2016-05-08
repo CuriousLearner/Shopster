@@ -128,7 +128,7 @@ public class WalletFragment extends Fragment {
         walletCall.enqueue(new Callback<wallet>() {
             @Override
             public void onResponse(Response<wallet> response, Retrofit retrofit) {
-                Utilities.showToast("Yoo !!!", WalletFragment.this.getActivity().getApplicationContext(), true);
+                //Utilities.showToast("Yoo !!!", WalletFragment.this.getActivity().getApplicationContext(), true);
                 Utilities.writeDebugLog("Wallet response code : " + response.code());
                 if (response.code() == 200) {
                     Utilities.writeDebugLog("Product found : " + response.body());
@@ -139,7 +139,7 @@ public class WalletFragment extends Fragment {
                     String amount1 = response.body().getBalance();
                     Utilities.writeDebugLog("Product found : " + amount1);
                     walletBalanceText.setText(amount1);
-                    Utilities.showToast("Product added successfully", WalletFragment.this.getActivity().getApplicationContext(), false);
+                    //Utilities.showToast("Product added successfully", WalletFragment.this.getActivity().getApplicationContext(), false);
                 } else {
                     Utilities.showToast("Invalid QR code !!!", WalletFragment.this.getActivity().getApplicationContext(), false);
                     Utilities.writeDebugLog("Response : " + response.raw());

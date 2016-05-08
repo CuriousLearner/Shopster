@@ -33,7 +33,7 @@ public class ShopsterNavigationDrawer extends MaterialNavigationDrawer {
 
         MaterialSection accountSection = newSection(
                 "Account",
-                new IconDrawable(this, Iconify.IconValue.fa_money),
+                new IconDrawable(this, Iconify.IconValue.fa_cogs),
                 new AccountFragment()
         );
 
