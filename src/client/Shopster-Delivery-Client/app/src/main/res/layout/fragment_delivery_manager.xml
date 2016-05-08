@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     tools:context="in.co.shopster.shopster_delivery_client.fragments.DeliveryManagerFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -33,13 +34,31 @@
             android:textSize="30sp"
             />
 
-        <Button
+        <!--<Button-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:id="@+id/btn_verify_delivery"-->
+            <!--android:visibility="gone"-->
+            <!--android:text="@string/label_verify_delivery"-->
+            <!--/>-->
+
+        <info.hoang8f.widget.FButton
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/btn_verify_delivery"
             android:visibility="gone"
             android:text="@string/label_verify_delivery"
+            android:textColor="@color/white"
+            android:layout_gravity="left|bottom"
+            android:layout_marginBottom="18dp"
+            fbutton:buttonColor="@color/fbutton_color_carrot"
+            fbutton:shadowColor="@color/fbutton_color_carrot"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="5dp"
+            fbutton:cornerRadius="5dp"
             />
+
+
 
 
     </LinearLayout>

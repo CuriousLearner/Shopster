@@ -30,7 +30,7 @@
     </array>
     <string name="label_logout">Logout</string>
     <string name="label_contact_number">Contact Number</string>
-    <string name="title_activity_apiconfig">APIConfigActivity</string>
+    <string name="title_activity_apiconfig">API Host Configuration</string>
     <string name="label_api_host">API Host Address</string>
     <string name="hint_api_host">Example : 192.168.1.1 …</string>
     <string name="label_configure">Configure</string>
@@ -42,7 +42,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_dynamic_api_host_config">DynamicApiHostConfigActivity</string>
+    <string name="title_activity_dynamic_api_host_config">API Host Configuration</string>
 
 
 </resources>

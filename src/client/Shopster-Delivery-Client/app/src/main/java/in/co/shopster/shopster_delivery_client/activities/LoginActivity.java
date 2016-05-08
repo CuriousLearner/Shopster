@@ -1,5 +1,6 @@
 package in.co.shopster.shopster_delivery_client.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
 
     ShopsterService shopsterService;
 
+    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                     ));
 
                     final Context ctx = LoginActivity.this.getApplicationContext();
+                    progressDialog = ProgressDialog.show(LoginActivity.this, "Logging in", "Contacting server ...", false);
                     loginCall.enqueue(new Callback<ShopsterToken>() {
                         @Override
                         public void onResponse(Response<ShopsterToken> response, Retrofit retrofit) {
@@ -87,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                                 userCall.enqueue(new Callback<Customer>() {
                                     @Override
                                     public void onResponse(Response<Customer> response, Retrofit retrofit) {
+                                        progressDialog.dismiss();
                                         Utilities.writeDebugLog("Get user by email : onResponse");
                                         Customer customer = response.body();
                                         Utilities.writeDebugLog("Get user by email : response code : " + response.code());
@@ -115,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onFailure(Throwable t) {
+                                        progressDialog.dismiss();
                                         Utilities.writeDebugLog("Get user by email : failed : reason : \n" + t.toString());
                                         Utilities.showToast("Login failed", ctx, false);
                                     }
@@ -126,8 +132,10 @@ public class LoginActivity extends AppCompatActivity {
 //                            } else if(response.body() == null) {
 //                                Utilities.writeDebugLog("Login : response is null");
                             } else if(response.code() == 400) {
+                                progressDialog.dismiss();
                                 Utilities.showToast("Invalid email/password combination.", LoginActivity.this.getApplicationContext(), true);
                             } else {
+                                progressDialog.dismiss();
                                 Utilities.writeDebugLog("Login : unexpected response code : "+response.code());
 
                                 Utilities.showToast("Login failed", ctx, false);
@@ -137,6 +145,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Throwable t) {
+                            progressDialog.dismiss();
                             Utilities.showToast("Login failed", ctx, true);
                             Utilities.writeDebugLog("Login : request failed : \n"+t.toString());
                         }

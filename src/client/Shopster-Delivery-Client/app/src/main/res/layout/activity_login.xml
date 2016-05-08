@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     tools:context="in.co.shopster.shopster_delivery_client.activities.LoginActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -58,12 +59,28 @@
             android:inputType="textPassword"
             />
 
-        <Button
+        <!--<Button-->
+            <!--android:id="@+id/btn_login"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:text="@string/label_login"-->
+            <!--/>-->
+
+        <info.hoang8f.widget.FButton
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:text="@string/label_login"
+            android:textColor="@color/white"
+            android:layout_gravity="left|bottom"
+            android:layout_marginBottom="18dp"
+            fbutton:buttonColor="@color/fbutton_color_carrot"
+            fbutton:shadowColor="@color/fbutton_color_carrot"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="5dp"
+            fbutton:cornerRadius="5dp"
             />
     </LinearLayout>
 
