@@ -2,12 +2,18 @@ package in.co.shopster.shopster.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.journeyapps.barcodescanner.Util;
 
@@ -26,6 +32,7 @@ import in.co.shopster.shopster.rest.models.DeliverySpecification;
 import in.co.shopster.shopster.rest.models.Order;
 import in.co.shopster.shopster.rest.models.PaymentDetails;
 import in.co.shopster.shopster.rest.models.Product;
+import in.co.shopster.shopster.rest.models.Recharge;
 import in.co.shopster.shopster.rest.models.responses.ShopsterGenericResponse;
 import in.co.shopster.shopster.rest.services.ShopsterService;
 import retrofit.Call;
@@ -156,6 +163,10 @@ public class OrderSummaryActivity extends AppCompatActivity {
                                 // needs recharge
                                 Utilities.showToast("Wallet balance is low. Please recharge.", ctx, false);
 
+                                rechargeDialog();
+
+
+
                             }
 
                         }
@@ -216,6 +227,10 @@ public class OrderSummaryActivity extends AppCompatActivity {
                             case 200:
                                 Utilities.showToast("Please take the package, from the counter", ctx, false);
                                 Intent restartIntent = new Intent(OrderSummaryActivity.this, MainActivity.class);
+                                Utilities.setSharedPreference(OrderSummaryActivity.this, Config.getShopsterDeliveryPrefKey(), "");
+                                Utilities.setSharedPreference(OrderSummaryActivity.this,Config.getShopsterOrderIdKey(),"");
+                                Utilities.setSharedPreference(OrderSummaryActivity.this,Config.getShopsterOrderPriceKey(),"");
+                                Utilities.setSharedPreference(OrderSummaryActivity.this,Config.getShopsterOrderStatusKey(),"");
                                 OrderSummaryActivity.this.startActivity(restartIntent);
                                 OrderSummaryActivity.this.finish();
                                 break;
@@ -238,10 +253,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-
-
-
                 Utilities.setSharedPreference(ctx, Config.getShopsterDeliveryPrefKey(), "I");
+
             }
         });
 
@@ -279,7 +292,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
                         switch (responseCode) {
                             case 200:
                                 Utilities.showToast("Your order will be delivered to your home.", ctx, false);
-                                Intent restartIntent = new Intent(OrderSummaryActivity.this, MainActivity.class);
+                               // Intent restartIntent = new Intent(OrderSummaryActivity.this, MainActivity.class);
+                                Intent restartIntent = new Intent(OrderSummaryActivity.this, HomeDeliveryActivity.class);
                                 OrderSummaryActivity.this.startActivity(restartIntent);
                                 OrderSummaryActivity.this.finish();
                                 refreshBtn.setVisibility(View.VISIBLE);
@@ -346,5 +360,83 @@ public class OrderSummaryActivity extends AppCompatActivity {
         }
 
     }
+
+    void rechargeDialog()
+    {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(OrderSummaryActivity.this);
+
+        alertDialog.setTitle("LOW BALANCE: RECHARGE");
+
+        alertDialog.setMessage("Enter Coupon Code");
+
+        final EditText input = new EditText(OrderSummaryActivity.this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        alertDialog.setView(input);
+       // final String couponCode = input.getText().toString();
+
+        alertDialog.setPositiveButton("ENTER",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {
+                        final String couponCode = input.getText().toString();
+                        Utilities.writeDebugLog("Coupon Code : "+couponCode);
+                        recharge(couponCode);
+                    }
+                });
+
+        alertDialog.setNegativeButton("CANCEL",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();
+    }
+
+
+    void recharge(String couponCode)
+    {
+        if (couponCode.equals("")) {
+            Utilities.showToast("Please fill in a coupon code ...", this.getApplicationContext(), false);
+            return;
+        }
+        String userAuthToken = "Token "+Utilities.getSharedPreference(this.getApplicationContext(), Config.getShopsterTokenKey());
+        ShopsterService shopsterService = RestClient.getRetrofit().create(ShopsterService.class);
+        String userid = Utilities.getSharedPreference(this.getApplicationContext(), Config.getShopsterUserId());
+        Recharge recharge = new Recharge(
+                userid,
+                couponCode
+        );
+
+        Call rechargeCall = shopsterService.rechargeCounpon(userAuthToken,recharge);
+        rechargeCall.enqueue(new Callback() {
+            @Override
+            public void onResponse(Response response, Retrofit retrofit) {
+                if (response.code() == 200) {
+                    Utilities.showToast("Recharge Successfull", OrderSummaryActivity.this, true);
+                    Utilities.writeDebugLog("Unexpected response code : " + response.code() + "\nResponse Body : " + response.body().toString());
+
+                } else if (response.code() == 400) {
+                    Utilities.showToast("Recharge failed !!!",OrderSummaryActivity.this, false);
+
+                } else {
+                    Utilities.showToast("Something went wrong please contact Shopster support", OrderSummaryActivity.this, true);
+                    Utilities.writeDebugLog("Unexpected response code : " + response.code() + "\nResponse Body : " + response.body().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Utilities.showToast("Recharge failed !!!", OrderSummaryActivity.this, false);
+                Utilities.writeDebugLog("Recharge failed : reason : " + t.toString());
+            }
+        });
+
+        Utilities.writeDebugLog("Calling recharge API : couponCode ==> " + couponCode);
+    }
+
 
 }

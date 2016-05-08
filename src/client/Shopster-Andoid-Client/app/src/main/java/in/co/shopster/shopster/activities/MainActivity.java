@@ -93,7 +93,28 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // check login
-        redirectIfLoggedIn();
+
+
+
+        String delivery = Utilities.getSharedPreference(this.getApplicationContext(), Config.getShopsterDeliveryPrefKey());
+        String userApiToken = Utilities.getSharedPreference(this.getApplicationContext(), Config.getShopsterTokenKey());
+        if(!delivery.isEmpty()) {
+            redirectToDelivery();
+        }
+        else {
+            redirectIfLoggedIn();
+        }
+    }
+    public void redirectToDelivery() {
+        String delivery = Utilities.getSharedPreference(this.getApplicationContext(), Config.getShopsterDeliveryPrefKey());
+        if(!delivery.isEmpty()) {
+            Utilities.writeDebugLog("User is logged in : API Key : "+delivery);
+            Intent openNavigationDrawerIntent = new Intent(this, HomeDeliveryActivity.class);
+            this.startActivity(openNavigationDrawerIntent);
+            Utilities.showToast("Welcome to Shopster !!!", this.getApplicationContext(), true);
+        } else {
+            Utilities.writeDebugLog("User is not logged in.");
+        }
     }
 
     public void redirectIfLoggedIn() {
@@ -111,6 +132,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        redirectIfLoggedIn();
+        String delivery = Utilities.getSharedPreference(this.getApplicationContext(), Config.getShopsterDeliveryPrefKey());
+        if(!delivery.isEmpty()) {
+            redirectToDelivery();
+        }
+        else {
+            redirectIfLoggedIn();
+        }
     }
 }

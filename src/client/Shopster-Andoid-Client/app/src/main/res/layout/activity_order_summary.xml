@@ -104,10 +104,6 @@
             android:text="@string/label_pay"
             />
 
-
-
-
-
     </LinearLayout>
 
 

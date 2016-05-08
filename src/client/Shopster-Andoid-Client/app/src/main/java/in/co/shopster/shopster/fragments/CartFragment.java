@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -230,68 +231,73 @@ public class CartFragment extends Fragment {
 
         String[] quantities = ca.allquant();
         int l = ca.getItemCount();
-        for(int i=0;i<l;i++) {
-            Log.e("allQuantities", quantities[i]);
-            long k = Long.parseLong(quantities[i]);
-            Product prod = products.get(i);
-            prod.setQuantity(k);
-            prod.status = 'O';
-        }
-        Log.e("order", products.toString());
-        Order order = new Order("2", products, 0, 0, null, false, 'O');
-        Utilities.writeDebugLog("Order created : "+order.toString());
+        Utilities.writeDebugLog("The number of products : "+l);
+        if(l>0) {
+            for (int i = 0; i < l; i++) {
+                Log.e("allQuantities", quantities[i]);
+                long k = Long.parseLong(quantities[i]);
+                Product prod = products.get(i);
+                prod.setQuantity(k);
+                prod.status = 'O';
+            }
+            Log.e("order", products.toString());
+            Order order = new Order("2", products, 0, 0, null, false, 'O');
+            Utilities.writeDebugLog("Order created : " + order.toString());
 
-        RestClient.init(Config.getShopsterApiHost());
-        ShopsterService shopsterService = RestClient.getRetrofit().create(ShopsterService.class);
+            RestClient.init(Config.getShopsterApiHost());
+            ShopsterService shopsterService = RestClient.getRetrofit().create(ShopsterService.class);
 
-        String authToken = "Token "+Utilities.getSharedPreference(
-                this.getActivity().getApplicationContext(), Config.getShopsterTokenKey());
-
-
+            String authToken = "Token " + Utilities.getSharedPreference(
+                    this.getActivity().getApplicationContext(), Config.getShopsterTokenKey());
 
 
-        Call<Order> placeOrderCall = shopsterService.placeOrder(authToken, order);
+            Call<Order> placeOrderCall = shopsterService.placeOrder(authToken, order);
 
-        final Context ctx = CartFragment.this.getActivity().getApplicationContext();
-        progressDialog = ProgressDialog.show(CartFragment.this.getActivity(), "Placing your order", "Contacting server ...", false);
-        placeOrderCall.enqueue(new Callback<Order>() {
-            @Override
-            public void onResponse(Response<Order> response, Retrofit retrofit) {
-                progressDialog.dismiss();
-                int responseCode = response.code();
-                Utilities.writeDebugLog("Place order : on response : response code "+responseCode);
-                switch(responseCode) {
-                    case 201:
-                        Utilities.writeDebugLog("Order Created ");
-                        Utilities.showToast("Order placed successfully !!!", ctx, true);
-                        char status = response.body().getStatus();
-                        long order_id = response.body().getOrderId();
-                        long price = response.body().getPrice();
-                        Utilities.setSharedPreference(ctx, Config.getShopsterOrderIdKey(), order_id + "");
-                        Utilities.setSharedPreference(ctx, Config.getShopsterOrderPriceKey(), price + "");
-                        Utilities.setSharedPreference(ctx, Config.getShopsterOrderStatusKey(), status + "");
-                        Utilities.writeDebugLog("Status : " + status + " Order Id : " + order_id + " price : " + price);
-                        Intent openOrderSummaryIntent = new Intent(CartFragment.this.getActivity(), OrderSummaryActivity.class);
-                        CartFragment.this.getActivity().startActivity(openOrderSummaryIntent);
-                        break;
-                    default:
-                        Utilities.writeDebugLog("Unexpected response code : "+responseCode);
-                        break;
+            final Context ctx = CartFragment.this.getActivity().getApplicationContext();
+            progressDialog = ProgressDialog.show(CartFragment.this.getActivity(), "Placing your order", "Contacting server ...", false);
+            placeOrderCall.enqueue(new Callback<Order>() {
+                @Override
+                public void onResponse(Response<Order> response, Retrofit retrofit) {
+                    progressDialog.dismiss();
+                    int responseCode = response.code();
+                    Utilities.writeDebugLog("Place order : on response : response code " + responseCode);
+                    switch (responseCode) {
+                        case 201:
+                            Utilities.writeDebugLog("Order Created ");
+                            Utilities.showToast("Order placed successfully !!!", ctx, true);
+                            char status = response.body().getStatus();
+                            long order_id = response.body().getOrderId();
+                            long price = response.body().getPrice();
+                            Utilities.setSharedPreference(ctx, Config.getShopsterOrderIdKey(), order_id + "");
+                            Utilities.setSharedPreference(ctx, Config.getShopsterOrderPriceKey(), price + "");
+                            Utilities.setSharedPreference(ctx, Config.getShopsterOrderStatusKey(), status + "");
+                            Utilities.writeDebugLog("Status : " + status + " Order Id : " + order_id + " price : " + price);
+                            Intent openOrderSummaryIntent = new Intent(CartFragment.this.getActivity(), OrderSummaryActivity.class);
+                            CartFragment.this.getActivity().startActivity(openOrderSummaryIntent);
+                            break;
+                        default:
+                            Utilities.writeDebugLog("Unexpected response code : " + responseCode);
+                            break;
+                    }
+
                 }
 
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                progressDialog.dismiss();
-                Utilities.showToast(
-                        "Server did not respond. Could not place order !!!",
-                        CartFragment.this.getActivity().getApplicationContext(),
-                        true
-                );
-                Utilities.writeDebugLog("Place order failed : reason : "+t.toString());
-            }
-        });
+                @Override
+                public void onFailure(Throwable t) {
+                    progressDialog.dismiss();
+                    Utilities.showToast(
+                            "Server did not respond. Could not place order !!!",
+                            CartFragment.this.getActivity().getApplicationContext(),
+                            true
+                    );
+                    Utilities.writeDebugLog("Place order failed : reason : " + t.toString());
+                }
+            });
+        }
+        else
+        {
+            Toast.makeText(this.getContext(),"Please Add Products in Cart",Toast.LENGTH_SHORT).show();
+        }
     }
 
 

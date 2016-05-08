@@ -28,9 +28,6 @@ public class Config {
     private static String SHOPSTER_DELIVERY_PREF = "DELIVERY_PREF";
 
 
-
-
-
     public static String getDebugLogTag() { return Config.DEBUG_LOG_TAG; }
 
     public static void enableDebugLogs() {
