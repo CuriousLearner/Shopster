@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    buildToolsVersion '22.0.1'
 
     defaultConfig {
         applicationId "in.co.shopster.shopster"
@@ -44,4 +44,6 @@ dependencies {
     compile 'com.google.zxing:core:3.2.0'
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
+    // android flat button
+    compile 'info.hoang8f:fbutton:1.0.5'
 }

@@ -2,7 +2,8 @@
 <FrameLayout
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto">
 
 <RelativeLayout
     android:layout_width="match_parent"
@@ -59,17 +60,34 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:layout_gravity="bottom|end"
-        android:src="@android:drawable/ic_menu_add"
+        android:src="@android:drawable/ic_input_add"
         />
 
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/submit"
+        android:visibility="gone"
         android:text="Submit"
         android:layout_gravity="left|bottom"
-
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        />
+    <info.hoang8f.widget.FButton
+        android:layout_height="50dp"
+        android:layout_width="150dp"
+        android:layout_marginTop="200dp"
+        android:id="@+id/submit"
+        android:textColor="@color/white"
+        android:text="@string/label_place_order"
+        android:layout_gravity="left|bottom"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="18dp"
+        fbutton:buttonColor="@color/fbutton_color_carrot"
+        fbutton:shadowColor="@color/fbutton_color_carrot"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp"
+        fbutton:cornerRadius="5dp"
         />
 
 </FrameLayout>

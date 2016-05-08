@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     tools:context="in.co.shopster.shopster.activities.RegistrationActivity">
 
@@ -223,13 +224,26 @@
                 android:inputType="number"
                 />
 
-            <Button
+            <!--<Button-->
+                <!--android:id="@+id/btn_register"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:text="@string/label_register"-->
+                <!--/>-->
+            <info.hoang8f.widget.FButton
                 android:id="@+id/btn_register"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="@string/label_register"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                fbutton:buttonColor="@color/fbutton_color_carrot"
+                fbutton:shadowColor="@color/fbutton_color_carrot"
+                fbutton:shadowEnabled="true"
+                fbutton:shadowHeight="5dp"
+                fbutton:cornerRadius="5dp"
                 />
-
 
         </LinearLayout>
 

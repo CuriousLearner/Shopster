@@ -48,6 +48,7 @@
     <string name="label_pay">Pay dues</string>
     <string name="label_take_package">Take package</string>
     <string name="label_deliver">Deliver package</string>
+    <string name="label_place_order">Place order</string>
 
 
 </resources>

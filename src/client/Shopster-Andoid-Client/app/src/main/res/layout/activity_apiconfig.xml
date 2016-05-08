@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="in.co.shopster.shopster.activities.APIConfigActivity">
+    tools:context="in.co.shopster.shopster.activities.APIConfigActivity"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -43,12 +44,30 @@
             android:layout_height="50dp"
             android:hint="@string/hint_api_host"
             />
-        <Button
+        <!--<Button-->
+            <!--android:id="@+id/btn_configure"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--android:text="@string/label_configure"-->
+            <!--/>-->
+        <info.hoang8f.widget.FButton
             android:id="@+id/btn_configure"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:text="@string/label_configure"
+            android:visibility="visible"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            fbutton:buttonColor="@color/fbutton_color_carrot"
+            fbutton:shadowColor="@color/fbutton_color_carrot"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="5dp"
+            fbutton:cornerRadius="5dp"
             />
 
     </LinearLayout>

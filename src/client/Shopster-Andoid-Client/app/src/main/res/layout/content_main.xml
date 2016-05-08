@@ -9,6 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.MainActivity"
     tools:showIn="@layout/activity_main">
 
@@ -17,34 +18,95 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
-        <Button
+        <!--<Button-->
+            <!--android:id="@+id/btn_login"-->
+            <!--android:layout_marginTop="100dp"-->
+            <!--android:text="@string/label_login_to_shopster"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp" />-->
+
+        <info.hoang8f.widget.FButton
             android:id="@+id/btn_login"
             android:layout_marginTop="100dp"
             android:text="@string/label_login_to_shopster"
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"
+            fbutton:buttonColor="@color/fbutton_color_carrot"
+            fbutton:shadowColor="@color/fbutton_color_carrot"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="5dp"
+            fbutton:cornerRadius="5dp"
+            />
 
-        <Button
+
+        <!--<Button-->
+            <!--android:id="@+id/btn_register"-->
+            <!--android:layout_marginTop="50dp"-->
+            <!--android:text="@string/label_register_on_shopster"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp" />-->
+
+        <info.hoang8f.widget.FButton
             android:id="@+id/btn_register"
             android:layout_marginTop="50dp"
             android:text="@string/label_register_on_shopster"
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:textColor="@color/white"
+            fbutton:buttonColor="@color/fbutton_color_carrot"
+            fbutton:shadowColor="@color/fbutton_color_carrot"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="5dp"
+            fbutton:cornerRadius="5dp"
+            />
 
-        <Button
+        <!--<Button-->
+            <!--android:id="@+id/btn_api_host_config"-->
+            <!--android:layout_marginTop="50dp"-->
+            <!--android:text="@string/label_configure_api_host"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--/>-->
+
+        <info.hoang8f.widget.FButton
             android:id="@+id/btn_api_host_config"
             android:layout_marginTop="50dp"
             android:text="@string/label_configure_api_host"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:textColor="@color/white"
+            fbutton:buttonColor="@color/fbutton_color_carrot"
+            fbutton:shadowColor="@color/fbutton_color_carrot"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="5dp"
+            fbutton:cornerRadius="5dp"
             />
 
-        <Button
+
+
+
+        <!--<Button-->
+            <!--android:id="@+id/btn_test"-->
+            <!--android:layout_marginTop="50dp"-->
+            <!--android:text="test"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--/>-->
+
+        <info.hoang8f.widget.FButton
             android:id="@+id/btn_test"
             android:layout_marginTop="50dp"
             android:text="test"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:textColor="@color/white"
+            fbutton:buttonColor="@color/fbutton_color_carrot"
+            fbutton:shadowColor="@color/fbutton_color_carrot"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="5dp"
+            fbutton:cornerRadius="5dp"
             />
 
 

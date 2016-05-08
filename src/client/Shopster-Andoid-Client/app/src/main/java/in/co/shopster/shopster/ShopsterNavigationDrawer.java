@@ -2,6 +2,8 @@ package in.co.shopster.shopster;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -23,6 +25,12 @@ public class ShopsterNavigationDrawer extends MaterialNavigationDrawer {
 
     @Override
     public void init(Bundle savedInstanceState) {
+
+        // setup header
+        View customHeaderView = LayoutInflater.from(this)
+                .inflate(R.layout.custom_header_layout, null);
+        this.setDrawerHeaderCustom(customHeaderView);
+
         MaterialSection accountSection = newSection(
                 "Account",
                 new IconDrawable(this, Iconify.IconValue.fa_money),
