@@ -40,7 +40,7 @@ class OrderSerializer(serializers.ModelSerializer):
         order.price = 0
         ordered_items_list = list()
         for product in ordered_products:
-            order.price += product["price"]
+            order.price += product["quantity"] * product["price"]
             # print(product)
             ordered_item = Order_Item.objects.create(**product)
             ordered_item.save()
