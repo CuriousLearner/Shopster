@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Shopster-Delivery-Client</string>
+    <string name="app_name">Shopster Delivery</string>
     <string name="title_activity_registration">Register On Shopster</string>
     <string name="label_email">Email</string>
     <string name="label_password">Password</string>
